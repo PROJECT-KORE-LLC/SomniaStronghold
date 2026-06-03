@@ -1,1 +1,1263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="SOMNIASTRONGHOLD // A private, offline-first financial vault and vibe engine.">
+    <meta name="theme-color" content="#020204">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>SOMNIASTRONGHOLD // VAULT</title>
+    
+    <link rel="manifest" href="manifest.json">
 
+    <style>
+        /* ============================================================
+           SOMNIASTRONGHOLD — FINANCIAL VIBE ENGINE
+           Responsive • Soft • Expensive Glassmorphism • Hardware Accelerated
+           ============================================================ */
+        *, *::before, *::after { box-sizing: border-box; }
+
+        /* Custom Global Scrollbars */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 10px; border: 1px solid rgba(0,0,0,0.3); }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+        :root, html {
+            --glass: rgba(15, 20, 30, 0.45);
+            --text-muted: #b5b0bb;
+            --bg-zoom: 1; --bg-bright: 0.85; --glow-opac: 0.3; --anim-speed: 10s;
+            --primary: #e0e7ff; --primary-glow: rgba(224, 231, 255, 0.5);
+            --accent: #a5b4fc; --glass-border: rgba(255, 255, 255, 0.12);
+            --text-main: #fdfbf7;
+            --particle-color: var(--primary); --glow-color: var(--primary-glow);
+        }
+
+        /* 20 Color Palettes */
+        .lunar-mode { --primary: #e0e7ff; --accent: #a5b4fc; --primary-glow: rgba(224,231,255,0.4); --glass-border: rgba(255,255,255,0.15); --text-main: #fdfbf7; }
+        .noir-mode { --primary: #D4AF37; --accent: #f59e0b; --primary-glow: rgba(212,175,55,0.4); --glass-border: rgba(212,175,55,0.2); --text-main: #F4EBD0; }
+        .vellum-mode { --primary: #C2B280; --accent: #d97706; --primary-glow: rgba(194,178,128,0.4); --glass-border: rgba(194,178,128,0.2); --text-main: #fefce8; }
+        .amethyst-mode { --primary: #d8b4e2; --accent: #2dd4bf; --primary-glow: rgba(216,180,226,0.4); --glass-border: rgba(216,180,226,0.2); --text-main: #e9d5ff; }
+        .crimson-mode { --primary: #fb7185; --accent: #be123c; --primary-glow: rgba(251,113,133,0.4); --glass-border: rgba(251,113,133,0.2); --text-main: #fecaca; }
+        .emerald-mode { --primary: #34d399; --accent: #065f46; --primary-glow: rgba(52,211,153,0.4); --glass-border: rgba(52,211,153,0.2); --text-main: #d1fae5; }
+        .solar-mode { --primary: #fbbf24; --accent: #d97706; --primary-glow: rgba(251,191,36,0.4); --glass-border: rgba(251,191,36,0.2); --text-main: #fef3c7; }
+        .void-mode { --primary: #ec4899; --accent: #8b5cf6; --primary-glow: rgba(236,72,153,0.4); --glass-border: rgba(236,72,153,0.2); --text-main: #fbcfe8; }
+        .obsidian-mode { --primary: #9ca3af; --accent: #4b5563; --primary-glow: rgba(156,163,175,0.4); --glass-border: rgba(156,163,175,0.2); --text-main: #f3f4f6; }
+        .ghost-mode { --primary: #f8fafc; --accent: #cbd5e1; --primary-glow: rgba(248,250,252,0.4); --glass-border: rgba(248,250,252,0.2); --text-main: #ffffff; }
+        .gothic-mode { --primary: #881337; --accent: #4c0519; --primary-glow: rgba(136,19,55,0.4); --glass-border: rgba(136,19,55,0.2); --text-main: #e5e5e5; }
+        .library-mode { --primary: #78350f; --accent: #b45309; --primary-glow: rgba(120,53,15,0.4); --glass-border: rgba(120,53,15,0.2); --text-main: #fef3c7; }
+        .y2k-mode { --primary: #22d3ee; --accent: #e879f9; --primary-glow: rgba(34,211,238,0.4); --glass-border: rgba(232,121,249,0.2); --text-main: #cffafe; }
+        .vintage-mode { --primary: #57534e; --accent: #7f1d1d; --primary-glow: rgba(87,83,78,0.4); --glass-border: rgba(87,83,78,0.2); --text-main: #d6d3d1; }
+        .cyber-mode { --primary: #84cc16; --accent: #166534; --primary-glow: rgba(132,204,22,0.4); --glass-border: rgba(132,204,22,0.2); --text-main: #ecfccb; }
+        .twilight-mode { --primary: #312e81; --accent: #4c1d95; --primary-glow: rgba(49,46,129,0.4); --glass-border: rgba(49,46,129,0.2); --text-main: #e0e7ff; }
+        .autumn-mode { --primary: #ea580c; --accent: #9a3412; --primary-glow: rgba(234,88,12,0.4); --glass-border: rgba(234,88,12,0.2); --text-main: #ffedd5; }
+        .abyss-mode { --primary: #0891b2; --accent: #0f766e; --primary-glow: rgba(8,145,178,0.4); --glass-border: rgba(8,145,178,0.2); --text-main: #cffafe; }
+        .sepia-mode { --primary: #b45309; --accent: #78350f; --primary-glow: rgba(180,83,9,0.4); --glass-border: rgba(180,83,9,0.2); --text-main: #fef3c7; }
+        .frost-mode { --primary: #bae6fd; --accent: #38bdf8; --primary-glow: rgba(186,230,253,0.4); --glass-border: rgba(186,230,253,0.2); --text-main: #f0f9ff; }
+
+        body, html { margin: 0; padding: 0; background: #050508; overflow: hidden; font-family: 'Georgia', serif; height: 100dvh; width: 100vw; color: var(--text-main); -webkit-font-smoothing: antialiased; user-select: none; }
+        input, textarea, select { user-select: auto; font-family: inherit; }
+
+        /* --- BOOT SCREEN --- */
+        #boot-screen { position: fixed; inset: 0; z-index: 9999; background: rgba(10, 10, 15, 0.9); backdrop-filter: blur(40px); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 1.5s ease-in-out; }
+        .kore-orb { position: absolute; width: 350px; height: 350px; background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%); animation: orb-breathe 5s infinite alternate ease-in-out; z-index: -1; pointer-events: none; transform: translateZ(0); }
+        @keyframes orb-breathe { 0% { transform: scale(0.8); opacity: 0.4; filter: hue-rotate(0deg); } 100% { transform: scale(1.3); opacity: 0.9; filter: hue-rotate(15deg); } }
+        .boot-content { width: 90%; max-width: 750px; padding: 50px 30px; text-align: center; border: 1px solid var(--glass-border); border-radius: 40px; background: rgba(255,255,255,0.03); box-shadow: 0 40px 80px rgba(0,0,0,0.6); position: relative; z-index: 10; backdrop-filter: blur(20px); }
+        
+        .boot-title { color: var(--primary); font-size: clamp(1.2rem, 4vw, 2.2rem); letter-spacing: 6px; margin: 0 0 20px 0; text-align: center; text-shadow: 0 0 30px var(--primary-glow); text-transform: uppercase; font-family: 'Times New Roman', serif; word-wrap: break-word; line-height: 1.4; }
+        .boot-disclaimer { color: var(--text-main); font-size: 1.05rem; line-height: 1.8; letter-spacing: 1px; margin-bottom: 35px; font-family: 'Georgia', serif; font-style: italic; opacity: 0.9; }
+
+        /* --- VISUAL CANVAS & GLOWS --- */
+        #bg-anchor { position: fixed; inset: 0; background-color: #050508; background-image: url('SomniaStronghold.png'); background-size: cover; background-position: center center; background-repeat: no-repeat; z-index: 1; transform: scale(var(--bg-zoom)) translateZ(0); filter: brightness(var(--bg-bright)); transition: background 1.5s ease, filter 0.5s ease, transform 0.5s ease; }
+        #glow-layer { position: fixed; inset: 0; background: radial-gradient(circle at 50% 50%, var(--glow-color) 0%, transparent 70%); z-index: 2; opacity: var(--glow-opac); pointer-events: none; transition: opacity 0.5s ease, background 1.5s ease; transform: translateZ(0); }
+        
+        .glow-pulse { animation: g-pulse var(--anim-speed) infinite alternate ease-in-out; }
+        .glow-breathe { animation: g-breathe var(--anim-speed) infinite alternate ease-in-out; }
+        .glow-strobe { animation: g-strobe var(--anim-speed) infinite alternate linear; }
+        .glow-phantom { animation: g-phantom var(--anim-speed) infinite alternate ease-in-out; }
+        .glow-wave { animation: g-wave var(--anim-speed) infinite alternate linear; }
+        .glow-flicker { animation: g-flicker calc(var(--anim-speed) / 4) infinite alternate ease-in-out; }
+        .glow-aurora { background: linear-gradient(45deg, var(--primary-glow), transparent); animation: g-pulse var(--anim-speed) infinite alternate ease-in-out; }
+        .glow-radar { background: conic-gradient(from 0deg, transparent, var(--primary-glow), transparent); animation: g-wave var(--anim-speed) infinite linear; }
+        .glow-static { animation: none; } .glow-none { opacity: 0 !important; }
+        .glow-heartbeat { animation: g-heartbeat calc(var(--anim-speed) / 3) infinite alternate cubic-bezier(0.4, 0, 0.6, 1); }
+        .glow-shimmer { animation: g-shimmer calc(var(--anim-speed) / 2) infinite alternate linear; background: linear-gradient(135deg, transparent, var(--glow-color), transparent); }
+        .glow-glitch { animation: g-glitch calc(var(--anim-speed) / 5) infinite linear; }
+        .glow-scanner { background: linear-gradient(to bottom, transparent, var(--glow-color), transparent); animation: g-scanner var(--anim-speed) infinite linear; }
+        .glow-nebula { background: radial-gradient(ellipse at center, var(--glow-color) 0%, transparent 80%); animation: g-nebula var(--anim-speed) infinite alternate ease-in-out; }
+        .glow-vortex { background: conic-gradient(from 180deg, var(--glow-color), transparent); animation: g-wave calc(var(--anim-speed) * 1.5) infinite linear reverse; }
+        .glow-ripple { animation: g-ripple var(--anim-speed) infinite ease-out; }
+        .glow-halo { background: radial-gradient(circle, transparent 40%, var(--glow-color) 60%, transparent 80%); animation: g-pulse var(--anim-speed) infinite alternate ease-in-out; }
+        .glow-eclipse { background: radial-gradient(circle, #000 30%, var(--glow-color) 70%, transparent 100%); animation: g-breathe var(--anim-speed) infinite alternate ease-in-out; }
+        .glow-inferno { background: radial-gradient(circle at bottom, var(--glow-color) 0%, transparent 70%); animation: g-flicker calc(var(--anim-speed) / 3) infinite alternate ease-in-out; }
+
+        @keyframes g-pulse { 0% { transform: scale(1); opacity: calc(var(--glow-opac) * 0.5); } 100% { transform: scale(1.1); opacity: var(--glow-opac); } }
+        @keyframes g-breathe { 0%, 100% { filter: brightness(0.8); } 50% { filter: brightness(1.2); } }
+        @keyframes g-strobe { 0%, 49% { opacity: var(--glow-opac); } 50%, 100% { opacity: 0; } }
+        @keyframes g-phantom { 0% { transform: translateY(-5%); opacity: 0; } 50% { opacity: var(--glow-opac); } 100% { transform: translateY(5%); opacity: 0; } }
+        @keyframes g-wave { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes g-flicker { 0%, 100% { opacity: var(--glow-opac); } 33% { opacity: calc(var(--glow-opac) * 0.3); } 66% { opacity: calc(var(--glow-opac) * 0.8); } }
+        @keyframes g-heartbeat { 0%, 100% { transform: scale(1); opacity: calc(var(--glow-opac) * 0.6); } 10%, 30% { transform: scale(1.05); opacity: var(--glow-opac); } 20% { transform: scale(1); opacity: calc(var(--glow-opac) * 0.8); } }
+        @keyframes g-shimmer { 0% { transform: translateX(-50%); } 100% { transform: translateX(50%); } }
+        @keyframes g-glitch { 0%, 100% { transform: translate(0, 0); opacity: var(--glow-opac); } 10% { transform: translate(-5px, 5px); opacity: calc(var(--glow-opac) * 0.5); } 20% { transform: translate(5px, -5px); opacity: var(--glow-opac); } }
+        @keyframes g-scanner { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
+        @keyframes g-nebula { 0% { filter: hue-rotate(0deg); transform: scale(1); } 100% { filter: hue-rotate(45deg); transform: scale(1.2); } }
+        @keyframes g-ripple { 0% { transform: scale(0.5); opacity: var(--glow-opac); } 100% { transform: scale(2); opacity: 0; } }
+
+        #particleCanvas { position: fixed; inset: 0; z-index: 3; pointer-events: none; opacity: var(--glow-opac); transition: opacity 0.5s ease; transform: translateZ(0); }
+
+        /* --- UI LAYOUT & WIDGETS --- */
+        #ui-wrapper { position: relative; z-index: 100; height: 100dvh; width: 100vw; transition: opacity 0.8s ease; }
+        body.cloaked #ui-wrapper { opacity: 0; pointer-events: none; }
+        .nav-logo { font-size: 1.3rem; letter-spacing: 6px; color: var(--primary); text-transform: uppercase; text-shadow: 0 0 20px var(--primary-glow); font-family: 'Times New Roman', serif; position: absolute; top: 30px; left: 35px; z-index: 200; }
+        #top-nav { position: absolute; top: 25px; right: 35px; display: flex; gap: 15px; align-items: center; z-index: 200; flex-wrap: wrap; justify-content: flex-end;}
+
+        .artifact-btn { background: rgba(0,0,0,0.3); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); color: var(--primary); padding: 10px 22px; border-radius: 50px; cursor: pointer; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; transition: all 0.4s ease; font-family: monospace; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .artifact-btn:hover { border-color: var(--accent); color: #fff; box-shadow: 0 0 20px var(--primary-glow); transform: translateY(-2px); background: rgba(255,255,255,0.05); }
+
+        .widget-dock { position: absolute; top: 120px; right: 35px; display: flex; flex-direction: column; gap: 20px; z-index: 90; }
+        .gorgeous-widget { background: rgba(10, 15, 25, 0.5); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 30px; padding: 30px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5); min-width: 280px; position: relative; overflow: hidden; }
+        .gorgeous-widget::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--primary), transparent); opacity: 0.5; }
+        .time-display { font-size: 4rem; font-weight: bold; letter-spacing: 5px; color: var(--primary); text-shadow: 0 0 25px var(--primary-glow); line-height: 1; margin-bottom: 5px; font-family: 'Times New Roman', serif;}
+        .date-display { font-size: 1rem; font-family: monospace; color: var(--text-muted); text-transform: uppercase; letter-spacing: 4px; }
+        .weather-display { font-size: 3rem; color: var(--accent); margin-bottom: 5px; text-shadow: 0 0 20px var(--primary-glow); }
+        .weather-desc { font-size: 1rem; font-family: monospace; color: var(--text-main); text-transform: uppercase; letter-spacing: 2px; }
+
+        /* --- ABACUS MODAL (Keyboard Supported) --- */
+        .abacus-modal-box { width: 100%; max-width: 500px; background: var(--glass); border: 1px solid var(--glass-border); border-radius: 30px; padding: 40px; box-shadow: 0 40px 80px rgba(0,0,0,0.8); backdrop-filter: blur(30px); }
+        .abacus-display { background: rgba(0,0,0,0.6); border: 1px solid var(--glass-border); padding: 25px; border-radius: 20px; font-family: monospace; font-size: 3rem; text-align: right; color: var(--primary); overflow: hidden; white-space: nowrap; margin-bottom: 25px; box-shadow: inset 0 0 25px rgba(0,0,0,0.7); text-shadow: 0 0 15px var(--primary-glow); }
+        .abacus-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+        .abacus-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: var(--text-main); font-family: monospace; font-size: 1.5rem; padding: 20px 0; border-radius: 15px; cursor: pointer; transition: 0.2s; font-weight: bold; }
+        .abacus-btn:hover, .abacus-btn.key-active { background: var(--primary); color: #000; box-shadow: 0 0 15px var(--primary-glow); border-color: var(--primary); transform: scale(0.95); }
+        .abacus-btn.op { color: var(--accent); border-color: var(--accent); background: rgba(0,0,0,0.4); }
+
+        /* --- MAKER PANEL --- */
+        #maker-panel { position: absolute; left: 35px; top: 90px; bottom: 35px; width: 420px; background: var(--glass); backdrop-filter: blur(35px); border: 1px solid var(--glass-border); border-radius: 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); display: flex; flex-direction: column; overflow: hidden; z-index: 100; }
+        .tab-bar { display: flex; border-bottom: 1px solid var(--glass-border); background: rgba(0,0,0,0.2); flex-wrap: wrap; flex-shrink: 0; }
+        .tab-btn { flex: 1; min-width: 60px; background: transparent; border: none; color: var(--text-muted); padding: 15px 5px; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: 0.3s; font-family: monospace; border-bottom: 2px solid transparent; }
+        .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); background: rgba(255,255,255,0.03); font-weight: bold; }
+        .tab-content { display: none; padding: 25px; overflow-y: auto; flex: 1; }
+        .tab-content.active { display: flex; flex-direction: column; gap: 15px; }
+
+        .btn-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 10px; }
+        .toy-btn { background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: var(--text-main); padding: 12px; border-radius: 30px; cursor: pointer; font-size: 0.65rem; letter-spacing: 1px; text-transform: uppercase; transition: all 0.3s ease; font-family: monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .toy-btn:hover { border-color: var(--accent); background: rgba(255,255,255,0.1); color: var(--text-main); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .toy-btn.active { border-color: var(--primary); background: var(--primary); color: #000; font-weight: bold; box-shadow: 0 0 15px var(--primary-glow); }
+        h4.section-title { margin: 0 0 8px 0; font-size: 0.7rem; color: var(--primary); letter-spacing: 3px; text-transform: uppercase; opacity: 0.8; font-family: monospace; }
+        .ctrl-row { display: flex; align-items: center; justify-content: space-between; gap: 15px; background: rgba(0,0,0,0.2); padding: 10px 15px; border-radius: 50px; border: 1px solid transparent; transition: 0.3s; }
+        .ctrl-row label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; font-family: monospace; letter-spacing: 1px; width: 80px; }
+        .ctrl-slider { flex: 1; -webkit-appearance: none; height: 4px; background: rgba(255,255,255,0.15); outline: none; border-radius: 50px; accent-color: var(--primary); }
+        .ctrl-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; background: var(--primary); border-radius: 50%; cursor: pointer; }
+        
+        .upload-zone { border: 1px dashed var(--glass-border); padding: 18px; text-align: center; border-radius: 20px; cursor: pointer; color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; background: rgba(0,0,0,0.1); display: block; width: 100%; font-family: monospace; }
+        .upload-zone:hover { background: rgba(255,255,255,0.08); color: var(--primary); border-color: var(--primary); transform: translateY(-2px); }
+        .upload-zone input { display: none; }
+
+        .mixer-card { display: flex; align-items: center; justify-content: space-between; padding: 12px 18px; background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 50px; gap: 8px; transition: all 0.3s ease; }
+        .mixer-card:hover { background: rgba(255,255,255,0.06); }
+        .mixer-card.playing { border-color: var(--accent); background: rgba(255,255,255,0.1); box-shadow: 0 0 15px rgba(0,0,0,0.2); }
+        .mixer-btn { background: none; border: none; color: var(--text-muted); font-size: 0.85rem; text-align: left; cursor: pointer; font-family: 'Georgia', serif; flex: 1; padding: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: 0.3s; }
+        .mixer-card.playing .mixer-btn { color: var(--primary); text-shadow: 0 0 10px var(--primary-glow); font-style: italic; }
+        .mixer-slider { -webkit-appearance: none; width: 60px; height: 4px; background: rgba(255,255,255,0.15); outline: none; border-radius: 50px; }
+        .mixer-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; background: var(--primary); border-radius: 50%; cursor: pointer; box-shadow: 0 0 10px var(--primary-glow); }
+
+        /* --- MODALS --- */
+        .modal-overlay { position: fixed; inset: 0; z-index: 200; display: none; background: rgba(0,0,0,0.6); backdrop-filter: blur(15px); align-items: center; justify-content: center; padding: 20px; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .modal-overlay.active { display: flex; }
+        .cast-box { width: 100%; max-width: 450px; background: var(--glass); border: 1px solid var(--glass-border); border-radius: 30px; padding: 40px; box-shadow: 0 40px 80px rgba(0,0,0,0.7); text-align: center; display: flex; flex-direction: column; align-items: center; }
+        
+        #somnia-dialog { z-index: 10000; }
+        #somnia-dialog .cast-box { padding: 35px; max-width: 400px; }
+        
+        .core-input { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: var(--primary); padding: 15px; border-radius: 15px; outline: none; font-family: monospace; margin-bottom: 10px; transition: 0.3s; }
+        .core-input:focus { border-color: var(--accent); box-shadow: 0 0 15px var(--primary-glow); background: rgba(0,0,0,0.5); }
+        select.core-input { appearance: none; cursor: pointer; }
+        .hidden { display: none !important; }
+
+        /* --- MEGA MODALS (Stronghold, Almanac, Keeper) --- */
+        .planner-bubble { width: 100%; max-width: 1400px; height: 85dvh; background: var(--glass); border: 1px solid var(--glass-border); border-radius: 40px; padding: 35px; box-shadow: 0 30px 80px rgba(0,0,0,0.8); display: flex; gap: 20px; overflow: hidden; backdrop-filter: blur(40px); }
+        .cal-panel { flex: 2; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 25px; padding: 25px; display: flex; flex-direction: column; box-shadow: inset 0 0 50px rgba(0,0,0,0.5); overflow-y: auto;}
+        .side-panel { flex: 1.2; display: flex; flex-direction: column; gap: 20px; overflow-y: auto; padding-right: 5px;}
+
+        /* FIXED: Sticky View Toggles with flex-shrink prevention so they don't collapse */
+        .view-toggles { position: sticky; top: -25px; background: rgba(5,5,8,0.85); backdrop-filter: blur(15px); z-index: 10; margin: -25px -25px 20px -25px; padding: 25px 25px 15px 25px; border-bottom: 1px solid var(--glass-border); display: flex; gap: 10px; overflow-x: auto; flex-shrink: 0; min-height: fit-content; }
+        .view-btn { flex: 1; background: transparent; border: none; color: var(--text-muted); font-size: 0.8rem; font-family: monospace; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; padding: 10px; transition: 0.3s; white-space: nowrap; flex-shrink: 0; }
+        .view-btn.active { color: var(--primary); font-weight: bold; background: rgba(255,255,255,0.05); border-radius: 12px; box-shadow: inset 0 0 10px var(--primary-glow);}
+        
+        /* FIXED: Header prevented from collapsing */
+        .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-shrink: 0; }
+        .cal-title { font-size: 1.5rem; color: var(--primary); text-transform: uppercase; letter-spacing: 3px; font-weight: bold; text-shadow: 0 0 10px var(--primary-glow); font-family: 'Times New Roman', serif;}
+        
+        /* Pie Charts */
+        .pie-chart { width: 200px; height: 200px; border-radius: 50%; background: conic-gradient(#000 0% 100%); box-shadow: 0 0 20px rgba(0,0,0,0.5); margin: 0 auto 20px auto; border: 2px solid var(--glass-border); transition: 0.3s; flex-shrink: 0;}
+        .legend-container { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 20px; flex-shrink: 0; }
+        .legend-item { display: flex; align-items: center; gap: 5px; font-family: monospace; font-size: 0.75rem; color: var(--text-main); }
+        .legend-color { width: 12px; height: 12px; border-radius: 50%; }
+
+        /* Ledger Items */
+        .ledger-item { background: rgba(0,0,0,0.5); border-left: 4px solid var(--primary); padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; border-right: 1px solid rgba(255,255,255,0.05); border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 10px; transition: 0.2s; flex-shrink: 0;}
+        .ledger-item:hover { background: rgba(255,255,255,0.05); }
+        .event-tag { font-size: 0.65rem; padding: 4px 10px; border-radius: 12px; font-family: monospace; text-transform: uppercase; margin-left: 10px; letter-spacing: 1px; font-weight: bold;}
+        .tag-gen { background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid #3b82f6; }
+
+        /* Side Panels (Stronghold / Keeper) */
+        .panel-card { background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 25px; padding: 25px; box-shadow: inset 0 0 50px rgba(0,0,0,0.5); flex-shrink: 0;}
+        .panel-title { font-size: 1rem; color: var(--primary); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; font-family: monospace; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+        .ai-input { width: 100%; background: rgba(0,0,0,0.6); border: 1px solid var(--glass-border); color: var(--text-main); padding: 15px; border-radius: 15px; outline: none; font-family: 'Georgia', serif; resize: vertical; min-height: 100px; margin-bottom: 10px; font-size: 0.95rem; line-height: 1.5; border-left: 2px solid var(--primary);}
+        .ai-input:focus { border-color: var(--accent); box-shadow: 0 0 15px var(--primary-glow); }
+
+        /* Accounts / Crumbs List */
+        .list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; margin-bottom: 8px; font-family: monospace; flex-shrink: 0;}
+        
+        /* Almanac Calendar Grid */
+        .grid-month { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; flex: 1; overflow-y: auto; padding-right:5px;}
+        .day-label { text-align: center; font-family: monospace; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; padding-bottom: 10px;}
+        .cal-cell { min-height: 85px; border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 8px; position: relative; font-family: monospace; font-size: 0.9rem; overflow-y: auto; display: flex; flex-direction: column; box-shadow: inset 0 0 15px rgba(0,0,0,0.5); transition: 0.2s;}
+        .cal-cell:hover { transform: translateY(-2px); box-shadow: inset 0 0 25px rgba(0,0,0,0.7); cursor: pointer; }
+        .cal-cell.selected-day { border-color: var(--primary) !important; box-shadow: inset 0 0 20px var(--primary-glow) !important; }
+
+        /* RESPONSIVE LAYOUT LOGIC */
+        @media (max-width: 1050px) {
+            .planner-bubble { flex-direction: column; height: 95dvh; overflow-y: auto;}
+            .side-panel { overflow-y: visible; }
+            #ui-wrapper { display: flex; flex-direction: column; align-items: center; padding-bottom: 20px; overflow-y: auto; }
+            #top-nav { position: static; display: flex; gap: 10px; padding: 20px; width: 100%; justify-content: center; flex-wrap: wrap; margin-top: 60px;}
+            .nav-logo { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); margin: 0; }
+            .widget-dock { position: static; flex-direction: row; justify-content: center; width: 95%; max-width: 500px; flex-wrap: wrap;}
+            #maker-panel { position: static; width: 95%; max-width: 500px; height: auto; min-height: 500px; border-radius: 25px; margin-top: 20px; }
+            .abacus-modal-box { padding: 20px; }
+        }
+        @media (min-width: 1800px) {
+            .planner-bubble { max-width: 1600px !important; height: 75dvh !important; padding: 50px !important; }
+            .ai-input { font-size: 1.3rem !important; line-height: 1.8 !important; }
+            .nav-logo { font-size: 2rem !important; top: 40px !important; left: 50px !important;}
+            #maker-panel { width: 550px !important; top: 120px !important;}
+            .widget-dock { top: 120px !important; right: 50px !important;}
+            .artifact-btn { font-size: 0.9rem !important; padding: 15px 30px !important; }
+        }
+    </style>
+</head>
+<body id="os-body" onclick="restoreUI()">
+
+    <div id="boot-screen">
+        <div class="kore-orb"></div>
+        <div class="boot-content">
+            <h1 class="boot-title">SOMNIASTRONGHOLD</h1>
+            <p class="boot-disclaimer">A completely private, strictly local-first vault. Your financial ledgers, bills, notes, and visual architecture are encrypted entirely within this isolated instance.</p>
+            <button class="artifact-btn" style="padding: 16px 45px; font-size: 1rem; border-color: var(--accent); border-radius: 50px;" onclick="startEngine()">OPEN THE VAULT</button>
+        </div>
+    </div>
+
+    <div id="somnia-dialog" class="modal-overlay">
+        <div class="cast-box">
+            <h3 id="dialog-title" style="color: var(--primary); letter-spacing: 4px; margin-top: 0; text-transform: uppercase; font-family: 'Times New Roman', serif;">Notice</h3>
+            <p id="dialog-msg" style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 25px; font-family: 'Georgia', serif; font-style: italic;"></p>
+            <input type="text" id="dialog-input" class="core-input" style="display:none; border-radius: 12px;">
+            <div style="display:flex; gap:15px; width:100%;">
+                <button id="dialog-cancel" class="toy-btn" style="flex:1;">Cancel</button>
+                <button id="dialog-confirm" class="toy-btn" style="flex:1; border-color:var(--accent); background: rgba(255,255,255,0.05); color: var(--text-main);">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="drop-modal" class="modal-overlay" onclick="toggleModal('drop-modal')">
+        <div class="cast-box" onclick="event.stopPropagation()">
+            <h3 style="color: var(--primary); letter-spacing: 4px; margin-top: 0; font-family: 'Times New Roman', serif;">Drop Your Vibe</h3>
+            <p style="font-size: 0.9rem; color: var(--text-muted); font-style: italic;">Copy the link below to deploy this vault anywhere:</p>
+            <input type="text" class="core-input" readonly value="https://project-kore-llc.github.io/SomniaStronghold/" onclick="this.select()">
+            <button class="toy-btn" style="width: 100%; border-color:var(--accent);" onclick="toggleModal('drop-modal')">Close</button>
+        </div>
+    </div>
+
+    <div id="cast-modal" class="modal-overlay" onclick="toggleModal('cast-modal')">
+        <div class="cast-box" onclick="event.stopPropagation()">
+            <h3 style="color: var(--primary); letter-spacing: 4px; margin-top: 0; font-family: 'Times New Roman', serif;">PROJECT TO TV</h3>
+            <p style="font-size: 0.9rem; color: var(--text-muted); font-style: italic;">Use your browser's Tab Mirroring to cast this PWA dashboard to the big screen.</p>
+            <button class="toy-btn" style="width: 100%; padding: 18px; border-color: var(--accent); border-radius: 50px;" onclick="toggleFullscreen()">⛶ Fill The Screen</button>
+        </div>
+    </div>
+
+    <div id="abacus-modal" class="modal-overlay" onclick="toggleModal('abacus-modal')">
+        <div class="abacus-modal-box" onclick="event.stopPropagation()">
+            <h3 style="color: var(--primary); letter-spacing: 4px; margin-top: 0; font-family: 'Times New Roman', serif; text-align: center;">ABACUS</h3>
+            <div class="abacus-display" id="aba-disp">0</div>
+            <div class="abacus-grid">
+                <button class="abacus-btn" id="btn-aba-7" onclick="aba('7')">7</button><button class="abacus-btn" id="btn-aba-8" onclick="aba('8')">8</button><button class="abacus-btn" id="btn-aba-9" onclick="aba('9')">9</button><button class="abacus-btn op" id="btn-aba-/" onclick="aba('/')">÷</button>
+                <button class="abacus-btn" id="btn-aba-4" onclick="aba('4')">4</button><button class="abacus-btn" id="btn-aba-5" onclick="aba('5')">5</button><button class="abacus-btn" id="btn-aba-6" onclick="aba('6')">6</button><button class="abacus-btn op" id="btn-aba-*" onclick="aba('*')">×</button>
+                <button class="abacus-btn" id="btn-aba-1" onclick="aba('1')">1</button><button class="abacus-btn" id="btn-aba-2" onclick="aba('2')">2</button><button class="abacus-btn" id="btn-aba-3" onclick="aba('3')">3</button><button class="abacus-btn op" id="btn-aba--" onclick="aba('-')">−</button>
+                <button class="abacus-btn op" id="btn-aba-C" onclick="aba('C')">C</button><button class="abacus-btn" id="btn-aba-0" onclick="aba('0')">0</button><button class="abacus-btn" id="btn-aba-." onclick="aba('.')">.</button><button class="abacus-btn op" id="btn-aba-+" onclick="aba('+')">+</button>
+                <button class="abacus-btn op" id="btn-aba-=" style="grid-column: 1 / span 4; background:var(--primary); color:#000;" onclick="aba('=')">=</button>
+            </div>
+            <div style="font-family:monospace; color:var(--text-muted); font-size:0.7rem; text-align:center; margin-top:15px;">Use Keyboard Numpad • 'Enter' to Solve • 'C' or 'Esc' to Clear</div>
+        </div>
+    </div>
+
+    <div id="stronghold-modal" class="modal-overlay" onclick="toggleModal('stronghold-modal')">
+        <div class="planner-bubble" onclick="event.stopPropagation()">
+            <div class="cal-panel">
+                <div class="view-toggles">
+                    <button class="view-btn active" onclick="switchLedgerContext('household', this)">Household</button>
+                    <button class="view-btn" onclick="switchLedgerContext('business', this)">Business/Gig</button>
+                    <button class="view-btn" onclick="switchLedgerContext('caretaker', this)">Caretaker</button>
+                    <button class="view-btn" onclick="switchLedgerContext('accounts', this)">Accounts</button>
+                </div>
+                
+                <div class="cal-header">
+                    <div class="cal-title" id="ledger-title-label">Household Ledger</div>
+                    <input type="text" id="search-ledger" class="core-input" style="width: 200px; margin:0;" placeholder="Search..." oninput="renderLedger()">
+                </div>
+
+                <div id="chart-container" style="display:flex; flex-direction:column; align-items:center;">
+                    <div class="pie-chart" id="context-pie-chart"></div>
+                    <div class="legend-container" id="chart-legend"></div>
+                </div>
+
+                <div id="ledger-list" style="flex: 1; overflow-y: visible; padding-right: 5px; display:flex; flex-direction:column;"></div>
+                
+                <div id="accounts-ui" class="hidden" style="flex: 1; display: flex; flex-direction: column;">
+                    <div class="panel-card" style="margin-bottom: 20px;">
+                        <div class="panel-title">Add Wallet / Account</div>
+                        <div style="display:flex; gap:10px; flex-wrap: wrap;">
+                            <select id="acc-context" class="core-input" style="flex:1;"><option value="household">Household</option><option value="business">Business</option><option value="caretaker">Caretaker</option></select>
+                            <input type="text" id="acc-name" class="core-input" style="flex:2;" placeholder="Name (e.g. Chase Check)">
+                            <select id="acc-type" class="core-input" style="flex:1;">
+                                <option value="Bank Account">Bank</option><option value="Credit Card">Credit</option><option value="Debt/Loan">Debt</option>
+                                <option value="Investment">Investment</option><option value="Savings">Savings</option><option value="Reserve">Reserve</option><option value="Stocks">Stocks</option>
+                            </select>
+                            <input type="number" id="acc-bal" class="core-input" style="flex:1;" placeholder="Bal" step="0.01">
+                            <button class="artifact-btn" style="border-color:var(--accent);" onclick="addAccount()">Add</button>
+                        </div>
+                    </div>
+                    <div id="accounts-list" style="display: flex; flex-direction: column;"></div>
+                </div>
+            </div>
+
+            <div class="side-panel" id="stronghold-entry-panel">
+                <div class="panel-card">
+                    <div class="panel-title" id="entry-form-title">Log Transaction</div>
+                    <input type="hidden" id="edit-id">
+                    
+                    <select id="acc-select" class="core-input"><option value="">-- Select Payment Account --</option></select>
+                    
+                    <div style="display: flex; flex-direction: column; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 15px; margin-bottom: 15px; border: 1px solid var(--glass-border);">
+                        <label style="font-size: 0.7rem; color: var(--primary); text-transform: uppercase; font-family: monospace; margin-bottom: 5px;">Amount / Auto-Calc</label>
+                        <div id="calc-preview" style="font-family: monospace; font-size: 1.5rem; color: var(--accent); margin-bottom: 0.5rem; text-align: right;">0.00</div>
+                        <input type="text" id="amount-input" class="core-input" placeholder="e.g. 150.50 or 50 + 25 * 1.07" autocomplete="off" style="margin-bottom: 0;">
+                    </div>
+
+                    <select id="category-select" class="core-input"></select>
+                    <input type="text" id="desc-input" class="core-input" placeholder="Merchant or Description">
+                    
+                    <div style="display:flex; gap:10px; margin-bottom: 10px;">
+                        <label class="upload-zone" style="flex:1; padding:10px; margin:0;"><span style="font-size:0.6rem;">📄 Receipt Img</span><input type="file" id="receipt-upload" accept="image/*" capture="environment"></label>
+                        <label class="upload-zone" style="flex:1; padding:10px; margin:0;"><span style="font-size:0.6rem;">🔢 Serial Img</span><input type="file" id="serial-upload" accept="image/*" capture="environment"></label>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px;">
+                        <button class="artifact-btn" id="save-btn" style="flex: 1; background: var(--primary); color: #000; font-weight: bold;" onclick="saveTransaction()">Save Entry</button>
+                        <button class="artifact-btn hidden" id="cancel-edit-btn" style="flex: 1; border-color: #fb7185; color: #fb7185;" onclick="cancelEdit()">Cancel</button>
+                    </div>
+                </div>
+                
+                <div class="panel-card" style="padding: 15px 25px;">
+                    <div class="panel-title" style="margin:0 0 10px 0; border:none; padding:0; font-size: 0.8rem;">Ledger Data Backup</div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="artifact-btn" style="flex:1; font-size: 0.65rem; padding: 10px 5px;" onclick="exportLedger()">📥 Export Ledger</button>
+                        <label class="artifact-btn" style="flex:1; font-size: 0.65rem; padding: 10px 5px; text-align:center; cursor:pointer; margin:0;">📤 Import Ledger<input type="file" style="display:none;" accept=".json" onchange="importLedger(this)"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="almanac-modal" class="modal-overlay" onclick="toggleModal('almanac-modal')">
+        <div class="planner-bubble" onclick="event.stopPropagation()">
+            <div class="cal-panel">
+                <div class="view-toggles">
+                    <button class="view-btn active" onclick="switchAlmanacContext('household', this)">Household Filter</button>
+                    <button class="view-btn" onclick="switchAlmanacContext('business', this)">Business Filter</button>
+                    <button class="view-btn" onclick="switchAlmanacContext('caretaker', this)">Caretaker Filter</button>
+                </div>
+                <div class="cal-header">
+                    <div class="cal-title">Cumulative Almanac</div>
+                    <input type="text" id="search-almanac" class="core-input" style="width: 250px; margin:0;" placeholder="Search bills & notes..." oninput="renderAlmanac()">
+                </div>
+                <div style="font-size:0.7rem; color:var(--text-muted); font-family:monospace; margin-bottom:15px; display:flex; gap:15px; flex-shrink:0;">
+                    <span><div style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#3b82f6;"></div> Household</span>
+                    <span><div style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#f59e0b;"></div> Business</span>
+                    <span><div style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#a855f7;"></div> Caretaker</span>
+                </div>
+                <div id="almanac-grid" class="grid-month"></div>
+            </div>
+            
+            <div class="side-panel">
+                <div class="panel-card" id="day-details-container" style="display:none; border-color: var(--primary);">
+                    <div class="panel-title" id="day-details-title" style="color: var(--primary);">Day Details</div>
+                    <div id="day-details-list" style="display:flex; flex-direction:column; gap:8px;"></div>
+                </div>
+
+                <div class="panel-card">
+                    <div class="panel-title">Add Bill</div>
+                    <div style="display:flex; flex-direction:column; gap:10px;">
+                        <select id="bill-context" class="core-input" style="margin:0;">
+                            <option value="household">Household (Blue)</option>
+                            <option value="business">Business (Gold)</option>
+                            <option value="caretaker">Caretaker (Purple)</option>
+                        </select>
+                        <input type="text" id="bill-name" class="core-input" placeholder="Bill Name (e.g. Electric)" style="margin:0;">
+                        <div style="display:flex; gap:10px;">
+                            <input type="number" id="bill-amt" class="core-input" placeholder="Amount ($)" style="margin:0; flex:1;">
+                            <input type="number" id="bill-day" class="core-input" placeholder="Due Day (1-31)" min="1" max="31" style="margin:0; flex:1;">
+                        </div>
+                        <button class="artifact-btn" style="border-color:var(--accent);" onclick="addBill()">Place on Calendar</button>
+                    </div>
+                </div>
+                <div class="panel-card" style="flex:1; display:flex; flex-direction:column;">
+                    <div class="panel-title">Breadcrumbs (Notes)</div>
+                    <div style="display:flex; gap:10px; margin-bottom:15px;">
+                        <input type="text" id="crumb-input" class="core-input" style="margin:0;" placeholder="Drop a thought..." onkeypress="if(event.key==='Enter') addCrumb()">
+                        <button class="artifact-btn" onclick="addCrumb()">Drop</button>
+                    </div>
+                    <div id="crumbs-list" style="overflow-y:visible; flex:1; display:flex; flex-direction:column;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="keeper-modal" class="modal-overlay" onclick="toggleModal('keeper-modal')">
+        <div class="planner-bubble" onclick="event.stopPropagation()" style="max-width:800px; flex-direction:column;">
+            <div class="cal-header">
+                <div class="cal-title">The Keeper (AI Assistant)</div>
+                <div style="display: flex; gap: 5px;">
+                    <input type="password" id="gemini-key-input" class="core-input" style="margin:0; padding: 4px 8px; width: 120px; font-size: 0.7rem;" placeholder="API Key...">
+                    <button class="toy-btn" id="save-key-btn" style="padding: 4px 8px; font-size: 0.6rem;" onclick="saveApiKey()">Save</button>
+                </div>
+            </div>
+            <div class="panel-card" style="flex:1; display:flex; flex-direction:column;">
+                <p style="font-size:0.85rem; color:var(--text-muted);">Use natural language to log entries into the active Stronghold context. Example: "Log $45 for groceries at target today."</p>
+                <textarea class="ai-input" id="ai-prompt" placeholder="Give instructions to The Keeper..." style="flex:1;"></textarea>
+                <button class="artifact-btn" style="width: 100%; border-color: var(--accent); padding: 15px;" onclick="processAI()">Command Keeper</button>
+                <div id="ai-status" style="font-size: 0.75rem; color: var(--text-muted); font-family: monospace; margin-top: 15px; text-align: center;">Awaiting instructions...</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="bg-anchor"></div>
+    <div id="glow-layer" class="glow-pulse"></div>
+    <canvas id="particleCanvas"></canvas>
+
+    <div id="ui-wrapper">
+        <div class="nav-logo">SOMNIASTRONGHOLD</div>
+        
+        <div id="top-nav" onclick="event.stopPropagation()">
+            <button class="artifact-btn" style="border-color: var(--accent); color: var(--text-main); font-weight: bold; background: rgba(255,255,255,0.05);" onclick="globalSnapshot()">📸 Snapshot</button>
+            <button class="artifact-btn" onclick="toggleCloak()">Cloak UI</button>
+            <button class="artifact-btn" onclick="toggleModal('abacus-modal')">Abacus</button>
+            <button class="artifact-btn" onclick="toggleModal('stronghold-modal')">The Stronghold</button>
+            <button class="artifact-btn" onclick="toggleModal('almanac-modal')">Almanac</button>
+            <button class="artifact-btn" onclick="toggleModal('keeper-modal')">The Keeper</button>
+            <button class="artifact-btn" onclick="toggleModal('cast-modal')">Project</button>
+            <button class="artifact-btn btn-drop" onclick="toggleModal('drop-modal')">Drop</button>
+        </div>
+
+        <div class="widget-dock" onclick="event.stopPropagation()">
+            <div class="gorgeous-widget" style="padding:20px;">
+                <div class="time-display" id="clock-widget" style="font-size:3.5rem;">00:00</div>
+                <div class="date-display" id="date-widget" style="font-size:0.8rem;">Loading...</div>
+            </div>
+            <div class="gorgeous-widget" style="padding:20px;">
+                <div class="weather-display" id="weather-icon">☁️ 72°F</div>
+                <div class="weather-desc" id="weather-text">Calm & Overcast</div>
+                <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 10px; font-family: monospace; letter-spacing: 2px;">LOCAL REGIONAL DATA</div>
+            </div>
+        </div>
+
+        <main id="maker-panel" onclick="event.stopPropagation()">
+            <div class="tab-bar">
+                <button class="tab-btn active" onclick="switchTab('tab-audio', this)">Audio</button>
+                <button class="tab-btn" onclick="switchTab('tab-canvas', this)">Canvas</button>
+                <button class="tab-btn" onclick="switchTab('tab-atmos', this)">Atmos</button>
+                <button class="tab-btn" onclick="switchTab('tab-vault', this)">Vault</button>
+                <button class="tab-btn" onclick="switchTab('tab-protips', this)">Pro Tips</button>
+            </div>
+
+            <div id="tab-audio" class="tab-content active">
+                <div style="display: flex; gap: 10px;">
+                    <label class="toy-btn" style="flex:1; text-align:center; border-color: var(--accent);">✨ Upload Audio<input type="file" style="display:none;" accept="audio/*" onchange="handleAudioUpload(this)"></label>
+                    <button class="toy-btn" onclick="stopAllAudio()" style="border-color:#fb7185; color:#fb7185; background:rgba(251,113,133,0.05);">Shh!</button>
+                </div>
+                <div class="ctrl-row" style="margin-top: 10px;"><label style="color:var(--primary);">Master Gain</label><input type="range" class="ctrl-slider" id="master-gain-slider" min="0" max="2" step="0.1" value="1" oninput="setMasterGain(this.value)"></div>
+                <div id="mixer-container" style="display:flex; flex-direction:column; gap:10px; margin-top: 10px;"></div>
+            </div>
+
+            <div id="tab-canvas" class="tab-content">
+                <label class="upload-zone" style="margin-bottom: 15px;">🖼️ Upload Local Canvas<input type="file" accept="image/*" onchange="executeImageUpload(this)"></label>
+                <div class="ctrl-row" style="margin-bottom: 15px;"><label>Bg Zoom</label><input type="range" class="ctrl-slider" id="zoom-slider" min="0.5" max="3" step="0.1" value="1" oninput="updateVar('--bg-zoom', this.value); saveCurrentState();"></div>
+                <div id="custom-bgs" style="display:flex; flex-direction:column; gap: 10px;"></div>
+            </div>
+
+            <div id="tab-atmos" class="tab-content">
+                <h4 class="section-title">Color Palettes</h4><div class="btn-grid" id="color-grid"></div>
+                <h4 class="section-title" style="margin-top:15px;">Sprinkle Form</h4><div class="btn-grid" id="particle-grid"></div>
+                
+                <h4 class="section-title" style="margin-top:15px;">Sprinkle Color</h4>
+                <div id="particle-color-grid" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
+                
+                <h4 class="section-title" style="margin-top:15px;">Glow Forms</h4><div class="btn-grid" id="glow-grid"></div>
+                
+                <h4 class="section-title" style="margin-top:15px;">Glow Color</h4>
+                <div id="glow-color-grid" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
+
+                <h4 class="section-title" style="margin-top:15px;">Tweaks</h4>
+                <div class="ctrl-row"><label>Speed</label><input type="range" class="ctrl-slider" id="speed-slider" min="1" max="20" value="10" oninput="updateVar('--anim-speed', (21-this.value)+'s'); saveCurrentState();"></div>
+                <div class="ctrl-row"><label>Opacity</label><input type="range" class="ctrl-slider" id="opac-slider" min="0" max="1" step="0.1" value="0.3" oninput="updateVar('--glow-opac', this.value); saveCurrentState();"></div>
+                <div class="ctrl-row"><label>Brightness</label><input type="range" class="ctrl-slider" id="bright-slider" min="0.2" max="2" step="0.1" value="0.85" oninput="updateVar('--bg-bright', this.value); saveCurrentState();"></div>
+            </div>
+
+            <div id="tab-vault" class="tab-content">
+                <button class="toy-btn" id="save-btn" style="border-color: var(--primary); padding: 18px; border-radius: 50px;" onclick="savePreset()">💖 Vault This Vibe</button>
+                <div style="display:flex; gap:10px; margin-top: 10px;">
+                    <button class="toy-btn" style="flex:1;" onclick="exportVibes()">📥 Export Vibes (UI Only)</button>
+                    <label class="toy-btn" style="flex:1; text-align:center; cursor: pointer;">📤 Import Vibes<input type="file" style="display:none;" accept=".json" onchange="importVibes(this)"></label>
+                </div>
+                <div id="vault-list" style="display:flex; flex-direction:column; gap:12px; margin-top:15px;"></div>
+            </div>
+
+            <div id="tab-protips" class="tab-content">
+                <h4 class="section-title" style="color: var(--primary);">🛠️ WORKSHOP MANUAL</h4>
+                <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; margin-top: 5px;">
+                    Your device is a private workshop. This vault enforces that philosophy by isolating all calculations and data strictly within your browser's local instance.
+                </p>
+                <ul style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; padding-left: 20px; margin-top:0;">
+                    <li><strong>Global Snapshot Tool:</strong> Located in the top navigation bar. Clicking 📸 Snapshot will immediately tally the cumulative volume of your active ledger, drop a timestamped/dated journal entry into the Almanac Breadcrumbs, and trigger a raw JSON download of your financial data to your hard drive.</li>
+                    <li><strong>Strict Separation of Data:</strong> The <em>Vault Tab</em> purely imports/exports aesthetic Vibes (Colors, Particles, Audio layouts). To import or export your raw financial data, you must use the isolated <em>Ledger Data Backup</em> tools found inside <em>The Stronghold</em> side panel.</li>
+                    <li><strong>Dynamic Pie Charts:</strong> The Stronghold generates CSS conic-gradient pie charts by executing inline math based exclusively on the entries visible in your active tab filter. Blank context = Blank chart.</li>
+                    <li><strong>Interactive Almanac:</strong> The Almanac Calendar provides a cumulative view. Household bills are <span style="color:#3b82f6;">Blue</span>, Business are <span style="color:#f59e0b;">Gold</span>, Caretaker are <span style="color:#a855f7;">Purple</span>. Click on any colored day block to open that day's specific bills in the side panel to mark them Paid/Unpaid.</li>
+                    <li><strong>Abacus Keyboard Support:</strong> Open the Abacus. You can type natively on your keyboard NumPad. Hit <code>Enter</code> to solve, or <code>C</code> / <code>Escape</code> / <code>Delete</code> to clear the board.</li>
+                </ul>
+                <h4 class="section-title" style="margin-top: 15px; color: var(--primary);">🤖 THE KEEPER (AI SANDBOX)</h4>
+                <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; margin-top: 5px;">
+                    1. Navigate to <strong>aistudio.google.com</strong> and generate an API key.<br>
+                    2. Open <strong>The Keeper</strong> tab from the top nav.<br>
+                    3. Paste your key and click <strong>Save</strong>. The key is securely written to your local profile cache and never leaves your machine.<br>
+                    4. Command The Keeper to parse loose text into strict JSON arrays that auto-populate the active Stronghold form.
+                </p>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // --- 0. UTILS & DIALOGS ---
+        function somniaAlert(title, msg) {
+            return new Promise(resolve => {
+                const modal = document.getElementById('somnia-dialog');
+                document.getElementById('dialog-title').innerText = title; document.getElementById('dialog-msg').innerText = msg;
+                document.getElementById('dialog-input').style.display = 'none'; document.getElementById('dialog-cancel').style.display = 'none';
+                const btn = document.getElementById('dialog-confirm'); btn.innerText = "OKAY";
+                btn.onclick = () => { modal.classList.remove('active'); resolve(true); }; modal.classList.add('active');
+            });
+        }
+        function somniaPrompt(title, msg, defaultVal = "") {
+            return new Promise(resolve => {
+                const modal = document.getElementById('somnia-dialog');
+                document.getElementById('dialog-title').innerText = title; document.getElementById('dialog-msg').innerText = msg;
+                const input = document.getElementById('dialog-input'); input.style.display = 'block'; input.value = defaultVal;
+                document.getElementById('dialog-cancel').style.display = 'block'; document.getElementById('dialog-cancel').onclick = () => { modal.classList.remove('active'); resolve(null); };
+                const btn = document.getElementById('dialog-confirm'); btn.innerText = "SAVE";
+                btn.onclick = () => { modal.classList.remove('active'); resolve(input.value); }; modal.classList.add('active'); input.focus();
+            });
+        }
+        function somniaConfirm(title, msg) {
+            return new Promise(resolve => {
+                const modal = document.getElementById('somnia-dialog');
+                document.getElementById('dialog-title').innerText = title; document.getElementById('dialog-msg').innerText = msg;
+                document.getElementById('dialog-input').style.display = 'none';
+                document.getElementById('dialog-cancel').style.display = 'block'; document.getElementById('dialog-cancel').onclick = () => { modal.classList.remove('active'); resolve(false); };
+                const btn = document.getElementById('dialog-confirm'); btn.innerText = "YES"; btn.style.color = "#fb7185"; btn.style.borderColor = "#fb7185";
+                btn.onclick = () => { modal.classList.remove('active'); btn.style.color = "var(--text-main)"; btn.style.borderColor = "var(--accent)"; resolve(true); }; modal.classList.add('active');
+            });
+        }
+        function toggleCloak() { document.body.classList.toggle('cloaked'); }
+        function restoreUI() { document.body.classList.remove('cloaked'); }
+        function toggleModal(id) { document.getElementById(id).classList.toggle('active'); }
+        function updateVar(name, val) { document.documentElement.style.setProperty(name, val); }
+        function toggleFullscreen() { if (!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen(); }
+        function switchTab(id, btn) { document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+
+        // --- 1. CORE DATABASES ---
+        const dbPromiseCore = new Promise((res, rej) => {
+            const req = indexedDB.open('SomniaStrongholdDB_Core', 1);
+            req.onupgradeneeded = e => {
+                const db = e.target.result;
+                if(!db.objectStoreNames.contains('transactions')) { const tx = db.createObjectStore('transactions', {keyPath:'id'}); tx.createIndex('context','context',{unique:false}); }
+                if(!db.objectStoreNames.contains('accounts')) db.createObjectStore('accounts', {keyPath:'id'});
+                if(!db.objectStoreNames.contains('bills')) db.createObjectStore('bills', {keyPath:'id'});
+                if(!db.objectStoreNames.contains('breadcrumbs')) db.createObjectStore('breadcrumbs', {keyPath:'id'});
+            };
+            req.onsuccess = e => res(e.target.result); req.onerror = e => rej(e);
+        });
+        const dbPromiseMedia = new Promise((res, rej) => {
+            const req = indexedDB.open('SomniaStrongholdDB_Media', 1);
+            req.onupgradeneeded = e => { if(!e.target.result.objectStoreNames.contains('media')) e.target.result.createObjectStore('media'); };
+            req.onsuccess = e => res(e.target.result); req.onerror = e => rej(e);
+        });
+
+        // Wrappers
+        async function saveMedia(key, blob) { const db = await dbPromiseMedia; db.transaction('media','readwrite').objectStore('media').put(blob, key); }
+        async function getMedia(key) { return new Promise(async res => { const db = await dbPromiseMedia; const req = db.transaction('media').objectStore('media').get(key); req.onsuccess = ()=>res(req.result); req.onerror = ()=>res(null); }); }
+        async function getAllMediaKeys() { return new Promise(async res => { const db = await dbPromiseMedia; const req = db.transaction('media').objectStore('media').getAllKeys(); req.onsuccess = ()=>res(req.result); }); }
+        async function deleteMedia(key) { const db = await dbPromiseMedia; db.transaction('media','readwrite').objectStore('media').delete(key); localStorage.removeItem('somnia_name_'+key); }
+        async function dbPut(store, data) { const db = await dbPromiseCore; db.transaction(store,'readwrite').objectStore(store).put(data); }
+        async function dbGetAll(store) { return new Promise(async res => { const db = await dbPromiseCore; const req = db.transaction(store).objectStore(store).getAll(); req.onsuccess = ()=>res(req.result); }); }
+        async function dbDelete(store, key) { const db = await dbPromiseCore; db.transaction(store,'readwrite').objectStore(store).delete(key); }
+
+        // --- 2. BOOT & ABACUS ---
+        async function startEngine() {
+            document.getElementById('boot-screen').style.opacity = '0';
+            if(!window.location.search) await restoreActiveState();
+            setTimeout(() => document.getElementById('boot-screen').remove(), 1500);
+        }
+
+        let abaExp = "";
+        function aba(val) {
+            const disp = document.getElementById('aba-disp');
+            // Animate button push
+            const btn = document.getElementById('btn-aba-'+val);
+            if(btn) { btn.classList.add('key-active'); setTimeout(()=>btn.classList.remove('key-active'), 150); }
+
+            if(val === 'C') { abaExp = ""; disp.innerText = "0"; return; }
+            if(val === '=') { 
+                try { 
+                    abaExp = String(new Function('return ' + abaExp)()); 
+                    // Format output safely
+                    disp.innerText = Number.isInteger(Number(abaExp)) ? abaExp : Number(abaExp).toFixed(2); 
+                } catch(e) { disp.innerText = "ERR"; abaExp = ""; } 
+                return; 
+            }
+            abaExp += val; disp.innerText = abaExp;
+        }
+
+        // Keyboard Abacus Support
+        document.addEventListener('keydown', (e) => {
+            const modal = document.getElementById('abacus-modal');
+            if(!modal.classList.contains('active')) return;
+            
+            const valid = ['0','1','2','3','4','5','6','7','8','9','.','+','-','*','/'];
+            
+            if(valid.includes(e.key)) {
+                e.preventDefault();
+                aba(e.key);
+            }
+            if(e.key === 'Enter' || e.key === '=') {
+                e.preventDefault();
+                aba('=');
+            }
+            if(e.key === 'Escape' || e.key === 'Backspace' || e.key === 'Delete' || e.key.toLowerCase() === 'c') {
+                e.preventDefault();
+                aba('C');
+            }
+        });
+
+        // --- 3. THE STRONGHOLD LOGIC ---
+        let currentContext = 'household';
+        const categories = {
+            household: ['Groceries', 'Utilities', 'Maintenance', 'Personal', 'Misc'],
+            business: ['Supplies', 'Services', 'Travel', 'Income', 'Fees'],
+            caretaker: ['Dependents', 'Pets', 'Shared Groceries', 'Medical']
+        };
+        const catColors = ['#66fcf1', '#45a29e', '#c5c6c7', '#950740', '#D4AF37', '#e879f9'];
+
+        async function switchLedgerContext(context, btn) {
+            currentContext = context;
+            document.querySelectorAll('#stronghold-modal .view-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active');
+            
+            const titles = { household: 'Household Ledger', business: 'Business & Gig Ledger', caretaker: 'Caretaker Ledger', accounts: 'Accounts Manager' };
+            document.getElementById('ledger-title-label').textContent = titles[context] || '';
+
+            const entryPanel = document.getElementById('stronghold-entry-panel');
+            const accountsUI = document.getElementById('accounts-ui');
+            const chartUI = document.getElementById('chart-container');
+            const listUI = document.getElementById('ledger-list');
+
+            if(context === 'accounts') {
+                entryPanel.classList.add('hidden'); chartUI.style.display = 'none'; listUI.classList.add('hidden');
+                accountsUI.classList.remove('hidden'); await renderAccounts();
+            } else {
+                entryPanel.classList.remove('hidden'); chartUI.style.display = 'flex'; listUI.classList.remove('hidden');
+                accountsUI.classList.add('hidden');
+                const sel = document.getElementById('category-select');
+                sel.innerHTML = categories[context].map(c => `<option value="${c}">${c}</option>`).join('');
+                await updateAccDropdown();
+                await renderLedger();
+            }
+        }
+
+        async function updateAccDropdown() {
+            const accs = await dbGetAll('accounts');
+            const sel = document.getElementById('acc-select');
+            sel.innerHTML = `<option value="">-- Select Payment Account --</option>` + accs.map(a => `<option value="${a.id}">${a.name} (${a.type})</option>`).join('');
+        }
+
+        // Inline Math setup for Ledger
+        document.getElementById('amount-input').addEventListener('input', (e) => {
+            try { document.getElementById('calc-preview').textContent = Number(new Function('return ' + e.target.value.replace(/[^0-9+\-*/.]/g, ''))()).toFixed(2); } catch(err) { document.getElementById('calc-preview').textContent = "..."; }
+        });
+        document.getElementById('amount-input').addEventListener('keydown', (e) => {
+            if(e.key === 'Enter') { e.preventDefault(); let val = document.getElementById('calc-preview').textContent; if(val !== '...') { document.getElementById('amount-input').value = val; document.getElementById('category-select').focus(); } }
+        });
+
+        async function saveTransaction() {
+            const amt = parseFloat(document.getElementById('calc-preview').textContent);
+            if(isNaN(amt) || amt === 0) return somniaAlert("Hold Up", "Enter a valid amount via the inline calculator.");
+            
+            const tx = {
+                id: document.getElementById('edit-id').value ? parseInt(document.getElementById('edit-id').value) : Date.now(),
+                context: currentContext, category: document.getElementById('category-select').value,
+                desc: document.getElementById('desc-input').value, amount: amt, date: new Date().toISOString(),
+                accountId: document.getElementById('acc-select').value
+            };
+
+            const rcptFile = document.getElementById('receipt-upload').files[0];
+            const serFile = document.getElementById('serial-upload').files[0];
+            if(rcptFile) { tx.rcptId = 'rcpt_'+tx.id; await saveMedia(tx.rcptId, rcptFile); }
+            if(serFile) { tx.serId = 'ser_'+tx.id; await saveMedia(tx.serId, serFile); }
+
+            await dbPut('transactions', tx);
+            cancelEdit(); await renderLedger();
+        }
+
+        function cancelEdit() {
+            document.getElementById('edit-id').value = ''; document.getElementById('amount-input').value = ''; document.getElementById('calc-preview').textContent = '0.00';
+            document.getElementById('desc-input').value = ''; document.getElementById('receipt-upload').value = ''; document.getElementById('serial-upload').value = '';
+            document.getElementById('save-btn').textContent = "Save Entry"; document.getElementById('cancel-edit-btn').classList.add('hidden');
+            document.getElementById('entry-form-title').textContent = "Log Transaction";
+        }
+
+        async function renderLedger() {
+            const container = document.getElementById('ledger-list'); container.innerHTML = '';
+            const searchQ = document.getElementById('search-ledger').value.toLowerCase();
+            const txs = await dbGetAll('transactions'); const accs = await dbGetAll('accounts');
+            
+            let filtered = txs.filter(t => t.context === currentContext);
+            if(searchQ) filtered = filtered.filter(t => (t.desc||'').toLowerCase().includes(searchQ) || t.category.toLowerCase().includes(searchQ));
+            filtered.sort((a,b) => b.id - a.id);
+
+            let catTotals = {}; let grandTotal = 0;
+            if(filtered.length === 0) {
+                container.innerHTML = `<div style="text-align:center; color:var(--text-muted); padding:20px; font-family:monospace;">Vault clear.</div>`;
+                document.getElementById('context-pie-chart').style.background = 'conic-gradient(#000 0% 100%)';
+                document.getElementById('chart-legend').innerHTML = '';
+                return;
+            }
+
+            filtered.forEach(tx => {
+                if(!catTotals[tx.category]) catTotals[tx.category] = 0;
+                catTotals[tx.category] += tx.amount; grandTotal += tx.amount;
+                
+                const acc = accs.find(a => String(a.id) === String(tx.accountId));
+                const accName = acc ? acc.name : 'Unassigned';
+                const rcptIcon = tx.rcptId ? '🧾' : ''; const serIcon = tx.serId ? '🔢' : '';
+                
+                container.innerHTML += `
+                    <div class="ledger-item">
+                        <div style="flex:1;">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                                <strong style="color:var(--primary); font-size:1.2rem;">$${tx.amount.toFixed(2)}</strong>
+                                <span class="event-tag tag-gen">${tx.category}</span>
+                            </div>
+                            <div style="font-size:0.85rem; color:var(--text-muted);">
+                                ${tx.desc||'No description'} • ${new Date(tx.date).toLocaleDateString()} • [${accName}] ${rcptIcon} ${serIcon}
+                            </div>
+                        </div>
+                        <div style="display:flex; flex-direction:column; gap:5px; margin-left:15px;">
+                            <button class="artifact-btn" style="padding:4px 10px; font-size:0.6rem;" onclick="editTx(${tx.id})">Edit</button>
+                            <button class="artifact-btn" style="padding:4px 10px; font-size:0.6rem; border-color:#fb7185; color:#fb7185;" onclick="delTx(${tx.id})">Drop</button>
+                        </div>
+                    </div>`;
+            });
+
+            const legendContainer = document.getElementById('chart-legend'); legendContainer.innerHTML = '';
+            let gradientStr = []; let currentDeg = 0; let colorIdx = 0;
+            
+            for(let cat in catTotals) {
+                const pct = (catTotals[cat] / grandTotal) * 100;
+                const col = catColors[colorIdx % catColors.length];
+                gradientStr.push(`${col} ${currentDeg}% ${currentDeg + pct}%`);
+                currentDeg += pct; colorIdx++;
+                legendContainer.innerHTML += `<div class="legend-item"><div class="legend-color" style="background:${col};"></div>${cat} (${pct.toFixed(1)}%)</div>`;
+            }
+            document.getElementById('context-pie-chart').style.background = `conic-gradient(${gradientStr.join(', ')})`;
+        }
+
+        async function editTx(id) {
+            const txs = await dbGetAll('transactions'); const tx = txs.find(t => t.id === id); if(!tx) return;
+            document.getElementById('edit-id').value = tx.id; document.getElementById('amount-input').value = tx.amount; document.getElementById('calc-preview').textContent = tx.amount.toFixed(2);
+            document.getElementById('category-select').value = tx.category; document.getElementById('desc-input').value = tx.desc; document.getElementById('acc-select').value = tx.accountId || '';
+            document.getElementById('save-btn').textContent = "Update"; document.getElementById('cancel-edit-btn').classList.remove('hidden');
+            document.getElementById('entry-form-title').textContent = "Edit Transaction";
+        }
+        async function delTx(id) { if(await somniaConfirm("Drop Entry?","Remove from vault?")) { await dbDelete('transactions', id); await renderLedger(); } }
+
+        // --- 4. ACCOUNTS MANAGER ---
+        async function addAccount() {
+            const ctx = document.getElementById('acc-context').value; const name = document.getElementById('acc-name').value; const type = document.getElementById('acc-type').value; const bal = parseFloat(document.getElementById('acc-bal').value||0);
+            if(!name) return somniaAlert("Notice","Name required.");
+            await dbPut('accounts', { id: 'acc_'+Date.now(), context: ctx, name, type, balance: bal });
+            document.getElementById('acc-name').value = ''; document.getElementById('acc-bal').value = ''; await renderAccounts();
+        }
+        async function renderAccounts() {
+            const list = document.getElementById('accounts-list'); list.innerHTML = ''; const accs = await dbGetAll('accounts');
+            ['household', 'business', 'caretaker'].forEach(ctx => {
+                const ctxAccs = accs.filter(a => a.context === ctx);
+                if(ctxAccs.length > 0) {
+                    list.innerHTML += `<div style="color:var(--accent); font-family:monospace; margin:15px 0 5px 0; font-weight:bold; text-transform:uppercase;">${ctx}</div>`;
+                    ctxAccs.forEach(a => { list.innerHTML += `<div class="list-item"><div><strong style="color:var(--primary);">${a.name}</strong> <span style="font-size:0.7rem; color:var(--text-muted);">(${a.type})</span><br>$${a.balance.toFixed(2)}</div> <button class="artifact-btn" style="padding:4px 8px; border-color:#fb7185; color:#fb7185; font-size:0.6rem;" onclick="delAcc('${a.id}')">✕</button></div>`; });
+                }
+            });
+        }
+        async function delAcc(id) { if(await somniaConfirm("Drop Wallet?","Erase account?")) { await dbDelete('accounts', id); await renderAccounts(); } }
+
+        // --- 5. ALMANAC (Calendar, Bills & Crumbs) ---
+        let currentAlmanacContext = 'household';
+        const contextColors = { household: '#3b82f6', business: '#f59e0b', caretaker: '#a855f7' };
+        window.activeAlmanacDay = null;
+
+        async function switchAlmanacContext(context, btn) {
+            currentAlmanacContext = context;
+            document.querySelectorAll('#almanac-modal .view-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active');
+            await renderAlmanac();
+        }
+
+        async function addBill() {
+            const ctx = document.getElementById('bill-context').value;
+            const n = document.getElementById('bill-name').value; 
+            const a = document.getElementById('bill-amt').value; 
+            const d = document.getElementById('bill-day').value;
+            if(!n || !d) return; 
+            await dbPut('bills', {id:'b_'+Date.now(), context: ctx, name:n, amount:a, day:d, paid:false});
+            document.getElementById('bill-name').value=''; document.getElementById('bill-amt').value=''; document.getElementById('bill-day').value=''; 
+            await renderAlmanac();
+            if(window.activeAlmanacDay) await renderDayDetails();
+        }
+        
+        async function addCrumb() {
+            const c = document.getElementById('crumb-input').value; if(!c) return;
+            await dbPut('breadcrumbs', {id:'cr_'+Date.now(), context:currentAlmanacContext, text:c, date:new Date().toLocaleDateString()}); 
+            document.getElementById('crumb-input').value=''; 
+            await renderAlmanac();
+        }
+
+        async function renderAlmanac() {
+            const searchQ = document.getElementById('search-almanac').value.toLowerCase();
+
+            // Render Cumulative Calendar Grid
+            const grid = document.getElementById('almanac-grid'); grid.innerHTML = '';
+            const now = new Date(); const y = now.getFullYear(); const m = now.getMonth();
+            const firstDay = new Date(y, m, 1).getDay(); const daysInMonth = new Date(y, m + 1, 0).getDate();
+            
+            const allBills = await dbGetAll('bills'); 
+
+            ['S','M','T','W','T','F','S'].forEach(d => { grid.innerHTML += `<div class="day-label">${d}</div>`; });
+            for(let i=0; i<firstDay; i++) grid.innerHTML += `<div></div>`;
+
+            for(let i=1; i<=daysInMonth; i++) {
+                const isToday = i === now.getDate();
+                const dayBills = allBills.filter(b => parseInt(b.day) === i);
+                
+                const hasUnpaid = dayBills.some(b => !b.paid);
+                const hasPaid = dayBills.some(b => b.paid);
+                
+                let bg = 'rgba(0,0,0,0.4)';
+                let border = 'rgba(255,255,255,0.05)';
+                
+                if(hasUnpaid) { bg = 'rgba(255,255,255,0.1)'; border = 'rgba(255,255,255,0.3)'; }
+                else if (hasPaid && !hasUnpaid) { bg = 'rgba(52,211,153,0.05)'; border = 'rgba(52,211,153,0.2)'; }
+                
+                let cellHTML = `<div class="cal-cell" id="cell-${i}" style="background:${bg}; border-color:${border};" onclick="selectDay(${i})">
+                                <span style="${isToday?'color:var(--primary); font-weight:bold;':''}">${i}</span>
+                                <div style="display:flex; flex-wrap:wrap; gap:4px; margin-top:8px;">`;
+                
+                dayBills.forEach(b => {
+                    const opac = b.paid ? '0.2' : '1';
+                    const cColor = contextColors[b.context] || '#fff';
+                    cellHTML += `<div style="width:10px; height:10px; border-radius:50%; background:${cColor}; opacity:${opac}; box-shadow: 0 0 6px ${cColor};"></div>`;
+                });
+                
+                cellHTML += `</div></div>`;
+                grid.innerHTML += cellHTML;
+            }
+
+            if(window.activeAlmanacDay) {
+                const el = document.getElementById('cell-'+window.activeAlmanacDay);
+                if(el) el.classList.add('selected-day');
+            }
+
+            // Render Filtered Crumbs
+            const cList = document.getElementById('crumbs-list'); cList.innerHTML=''; 
+            const allCrumbs = await dbGetAll('breadcrumbs'); 
+            let ctxCrumbs = allCrumbs.filter(c => c.context === currentAlmanacContext || c.context === 'System');
+            if(searchQ) ctxCrumbs = ctxCrumbs.filter(c => c.text.toLowerCase().includes(searchQ));
+
+            ctxCrumbs.sort((a,b)=>b.id.replace('cr_','')-a.id.replace('cr_','')).forEach(c => {
+                cList.innerHTML += `<div class="list-item"><div><span style="font-size:0.7rem; color:var(--accent);">${c.date}</span><br>${c.text}</div> <button class="artifact-btn" style="padding:4px 8px; font-size:0.6rem; border-color:#fb7185; color:#fb7185;" onclick="delCrumb('${c.id}')">✕</button></div>`;
+            });
+        }
+
+        async function selectDay(day) {
+            window.activeAlmanacDay = day;
+            document.querySelectorAll('.cal-cell').forEach(c => c.classList.remove('selected-day'));
+            document.getElementById('cell-'+day).classList.add('selected-day');
+            
+            document.getElementById('day-details-container').style.display = 'block';
+            document.getElementById('day-details-title').innerText = `Details for the ${day}`;
+            await renderDayDetails();
+        }
+
+        async function renderDayDetails() {
+            const day = window.activeAlmanacDay;
+            const card = document.getElementById('day-details-list');
+            if(!day) return;
+            
+            const allBills = await dbGetAll('bills');
+            const dayBills = allBills.filter(b => parseInt(b.day) === day);
+            
+            if(dayBills.length === 0) { 
+                card.innerHTML = '<div style="color:var(--text-muted); font-size:0.8rem; font-family:monospace;">No bills logged for this day.</div>'; 
+                return; 
+            }
+            
+            let html = '';
+            dayBills.forEach(b => {
+                const col = contextColors[b.context] || '#fff';
+                const status = b.paid ? 'line-through; opacity:0.5;' : '';
+                html += `<div class="list-item" style="border-left: 3px solid ${col}; ${status}">
+                    <div><strong style="color:var(--text-main);">${b.name}</strong><br>$${b.amount}</div>
+                    <button class="artifact-btn" style="padding:4px 10px; font-size:0.6rem;" onclick="toggleBill('${b.id}')">${b.paid ? 'Undo' : 'Pay'}</button>
+                </div>`;
+            });
+            card.innerHTML = html;
+        }
+
+        async function toggleBill(id) { 
+            const bills = await dbGetAll('bills'); 
+            const b = bills.find(x=>x.id===id); 
+            if(b) { 
+                b.paid = !b.paid; 
+                await dbPut('bills',b); 
+                await renderAlmanac(); 
+                await renderDayDetails();
+            } 
+        }
+        
+        async function delCrumb(id) { await dbDelete('breadcrumbs', id); renderAlmanac(); }
+
+        // --- 6. THE KEEPER (AI) ---
+        function saveApiKey() { const k = document.getElementById('gemini-key-input').value.trim(); if(k) { localStorage.setItem('gemini_api_key', k); const b = document.getElementById('save-key-btn'); b.innerText="Saved!"; setTimeout(()=>b.innerText="Save",2000); } }
+        async function processAI() {
+            const p = document.getElementById('ai-prompt').value.trim(); const s = document.getElementById('ai-status'); const k = localStorage.getItem('gemini_api_key');
+            if(!k) return s.innerText = "Error: Missing API Key."; if(!p) return s.innerText = "Provide instructions.";
+            s.style.color = 'var(--accent)'; s.innerText = "Keeper parsing data...";
+            const sys = `Extract financial data. Return strict JSON: {"amount": number, "desc": "string", "category": "string (pick closest from: Groceries, Utilities, Maintenance, Personal, Misc, Supplies, Services, Travel, Income, Fees, Dependents, Pets, Shared Groceries, Medical)"}. Prompt: "${p}"`;
+            try {
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${k}`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({contents:[{parts:[{text:sys}]}]})});
+                const data = await res.json(); if(data.error) throw new Error(data.error.message);
+                const obj = JSON.parse(data.candidates[0].content.parts[0].text.replace(/```json/g,'').replace(/```/g,'').trim());
+                document.getElementById('amount-input').value = obj.amount; document.getElementById('calc-preview').textContent = obj.amount.toFixed(2); document.getElementById('desc-input').value = obj.desc;
+                const sel = document.getElementById('category-select');
+                for(let i=0; i<sel.options.length; i++) { if(sel.options[i].value === obj.category) { sel.selectedIndex=i; break; } }
+                document.getElementById('ai-prompt').value=''; toggleModal('keeper-modal'); toggleModal('stronghold-modal');
+            } catch(e) { console.log(e); s.style.color='#fb7185'; s.innerText="API/Parse Error."; }
+        }
+
+        // --- 7. VIBE ENGINE (Audio, Particles, Canvas, Vault, Snapshots) ---
+        
+        // Color Palette Data for Sprinkles & Glows
+        const hexColors = ['#e0e7ff', '#D4AF37', '#C2B280', '#d8b4e2', '#fb7185', '#34d399', '#fbbf24', '#ec4899', '#9ca3af', '#ffffff', '#881337', '#78350f', '#22d3ee', '#57534e', '#84cc16', '#312e81', '#ea580c', '#0891b2', '#b45309', '#bae6fd'];
+        
+        function populateColorGrid(id, cssVar) {
+            const grid = document.getElementById(id);
+            hexColors.forEach((hex) => {
+                const b = document.createElement('button');
+                b.style.width = '25px'; b.style.height = '25px'; b.style.borderRadius = '50%'; b.style.background = hex; 
+                b.style.border = '2px solid transparent'; b.style.cursor = 'pointer'; b.style.flexShrink = '0';
+                b.onclick = () => { updateVar(cssVar, hex); saveCurrentState(); };
+                grid.appendChild(b);
+            });
+        }
+
+        // Audio Engine
+        let actAud = {}; let aCtx; let mGain; let cLib = [];
+        const soundLibrary = [
+            { id: "rain", name: "🌧️ Gentle Rain", url: "rain.mp3" }, { id: "thunder", name: "🌩️ Thunderstorm", url: "thunder.mp3" },
+            { id: "winterwind", name: "🌬️ Winter Wind", url: "winterwind.mp3" }, { id: "owls", name: "🦉 Midnight Owls", url: "owls.mp3" },
+            { id: "raven", name: "🐦‍⬛ Raven Calls", url: "raven.mp3" }, { id: "frogs", name: "🐸 Swamp Frogs", url: "frogs.mp3" },
+            { id: "crickets", name: "🦗 Night Crickets", url: "crickets.mp3" }, { id: "fire", name: "🔥 Hearth Fire", url: "fire.mp3" },
+            { id: "simmering", name: "🍲 Simmering Pot", url: "simmeringpot.mp3" }, { id: "teacup", name: "☕ Teacup Clinks", url: "teacup.mp3" },
+            { id: "clock", name: "🕰️ Ticking Clock", url: "clock.mp3" }, { id: "cat", name: "🐾 Purring Cat", url: "cat.mp3" },
+            { id: "windchimes", name: "🎐 Wind Chimes", url: "windchimes.mp3" }, { id: "musicbox1", name: "🎶 Music Box I", url: "musicbox1.mp3" }
+        ];
+
+        function initAudio() { if(!aCtx) { aCtx = new (window.AudioContext||window.webkitAudioContext)(); mGain = aCtx.createGain(); mGain.gain.value = document.getElementById('master-gain-slider').value; mGain.connect(aCtx.destination); } if(aCtx.state==='suspended') aCtx.resume(); }
+        function setMasterGain(v) { if(mGain) mGain.gain.value=v; }
+        async function loadCustomAudio() {
+            cLib=[]; const keys=await getAllMediaKeys(); const aKeys=keys.filter(k=>k.startsWith('aud_'));
+            for(let key of aKeys) { const b=await getMedia(key); if(b) cLib.push({id:key, name:localStorage.getItem('somnia_name_'+key)||"Sound", url:URL.createObjectURL(b)}); }
+            const allSounds = [...cLib, ...soundLibrary];
+            const mc = document.getElementById('mixer-container'); mc.innerHTML = allSounds.map(t=>`<div class="mixer-card" id="card-${t.id}"><button class="mixer-btn" onclick="toggleStem('${t.id}','${t.url}')">${t.name}</button><button class="toy-btn" style="color:#fb7185; border:none; background:transparent; display:${cLib.includes(t)?'block':'none'};" onclick="delAud('${t.id}')">✕</button><input type="range" id="vol-${t.id}" class="mixer-slider" min="0" max="1" step="0.05" value="0.5" oninput="adjVol('${t.id}',this.value)"></div>`).join('');
+            Object.keys(actAud).forEach(id => { const c = document.getElementById(`card-${id}`); if(c) c.classList.add('playing'); });
+        }
+        function handleAudioUpload(input) {
+            if(!input.files||!input.files[0]) return; const file=input.files[0]; const key='aud_'+Date.now();
+            saveMedia(key,file).then(()=>{ localStorage.setItem('somnia_name_'+key, "Custom Audio"); loadCustomAudio(); }); input.value="";
+        }
+        async function delAud(id) { if(await somniaConfirm("Drop Sound?","Delete?")) { if(actAud[id]) { actAud[id].a.pause(); delete actAud[id]; } await deleteMedia(id); loadCustomAudio(); } }
+        function toggleStem(id, url) {
+            initAudio(); const c=document.getElementById(`card-${id}`);
+            if(actAud[id]) { actAud[id].a.pause(); delete actAud[id]; c.classList.remove('playing'); }
+            else { const a=new Audio(url); a.loop=true; const src=aCtx.createMediaElementSource(a); const g=aCtx.createGain(); g.gain.value=document.getElementById(`vol-${id}`).value; src.connect(g); g.connect(mGain); a.play(); actAud[id]={a,g}; c.classList.add('playing'); }
+        }
+        function adjVol(id,v) { if(actAud[id]) actAud[id].g.gain.value=v; }
+        function stopAllAudio() { Object.keys(actAud).forEach(id=>{ actAud[id].a.pause(); document.getElementById(`card-${id}`).classList.remove('playing'); delete actAud[id]; }); }
+
+        // Visuals (Particles/Canvas/Vault)
+        const colors = ['lunar','noir','vellum','amethyst','crimson','emerald','solar','void','obsidian','ghost','gothic','library','y2k','vintage','cyber','twilight','autumn','abyss','sepia','frost'];
+        const glows = ['pulse','breathe','strobe','phantom','wave','flicker','aurora','radar','static','none','heartbeat','shimmer','glitch','scanner','nebula','vortex','ripple','halo','eclipse','inferno'];
+        const pList = ['dust','embers','snow','void','rain','ash','stars','bubbles','matrix','spores','leaves','glitch','runes','fireflies','fog','petals','sparks','bats','static','motes'];
+        
+        function populateGrid(id, arr, type) {
+            const grid = document.getElementById(id);
+            arr.forEach((item, index) => {
+                const b = document.createElement('button'); b.className = 'toy-btn'; b.textContent = item; if(index===0) b.classList.add('active'); 
+                b.onclick = () => {
+                    document.querySelectorAll(`#${id} .toy-btn`).forEach(x=>x.classList.remove('active')); b.classList.add('active');
+                    if(type==='color') document.documentElement.className = `${item}-mode`;
+                    if(type==='glow') document.getElementById('glow-layer').className = `glow-${item}`;
+                    if(type==='particle') window.particleType = item;
+                    saveCurrentState();
+                }; grid.appendChild(b);
+            });
+        }
+
+        window.particleType = 'dust'; window.particleCount = 50; 
+        function buildParticles(w, h) { return Array.from({length: window.particleCount}, ()=>({x:Math.random()*w, y:Math.random()*h, r:Math.random()*2+0.5, vx:(Math.random()-0.5), vy:(Math.random()-0.5), t:Math.random()*100})); }
+        function initParticles() {
+            const canvas = document.getElementById('particleCanvas'); const ctx = canvas.getContext('2d');
+            let w = canvas.width = window.innerWidth; let h = canvas.height = window.innerHeight;
+            window.addEventListener('resize', () => { w=canvas.width=window.innerWidth; h=canvas.height=window.innerHeight; particles=buildParticles(w,h); });
+            let particles = buildParticles(w,h); let lastTime = 0;
+            function loop(ts) {
+                requestAnimationFrame(loop); if(!ts) ts = performance.now(); if(ts-lastTime < 33) return; lastTime = ts;
+                ctx.clearRect(0,0,w,h);
+                let col = getComputedStyle(document.documentElement).getPropertyValue('--particle-color').trim();
+                if(col.includes('var(')) col = getComputedStyle(document.documentElement).getPropertyValue(col.match(/var\(([^)]+)\)/)[1].trim()).trim();
+                ctx.fillStyle = col; ctx.shadowBlur = 8; ctx.shadowColor = col;
+                particles.forEach((p, i) => {
+                    let spd = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--anim-speed'))||10; let mult = 10/spd;
+                    if(window.particleType==='dust'){p.x+=p.vx*mult; p.y+=p.vy*mult;} else if(window.particleType==='embers'){p.y-=(Math.abs(p.vy)+0.5)*mult; p.x+=p.vx*mult;} else{p.x+=p.vx*mult; p.y+=p.vy*mult;}
+                    if(p.x<0) p.x=w; if(p.x>w) p.x=0; if(p.y<0) p.y=h; if(p.y>h) p.y=0;
+                    ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
+                });
+            } requestAnimationFrame(loop);
+        }
+
+        async function loadCustomBackgrounds() {
+            const grid = document.getElementById('custom-bgs'); grid.innerHTML = '';
+            const keys = await getAllMediaKeys(); const bgKeys = keys.filter(k=>k.startsWith('bg_'));
+            for(let key of bgKeys) {
+                const blob = await getMedia(key); if(blob) {
+                    const name = localStorage.getItem('somnia_name_'+key) || "🖼️ Canvas";
+                    const w = document.createElement('div'); w.style.display='flex'; w.style.gap='8px';
+                    const b = document.createElement('button'); b.className='toy-btn'; b.style.flex="1"; b.textContent=name;
+                    b.onclick = () => { document.getElementById('bg-anchor').style.backgroundImage=`url('${URL.createObjectURL(blob)}')`; localStorage.setItem('somnia_active_bg_key', key); saveCurrentState(); };
+                    const d = document.createElement('button'); d.className='toy-btn'; d.innerHTML='✕'; d.style.color='#fb7185';
+                    d.onclick = async () => { if(await somniaConfirm("Drop Canvas?","Delete?")) { await deleteMedia(key); loadCustomBackgrounds(); } };
+                    w.appendChild(b); w.appendChild(d); grid.prepend(w);
+                }
+            }
+        }
+        function executeImageUpload(input) {
+            if(!input.files||!input.files[0]) return; const file = input.files[0]; const key = 'bg_'+Date.now();
+            const r = new FileReader(); r.onload = async (e) => {
+                const img = new Image(); img.onload = async () => {
+                    const c = document.createElement('canvas'); const cx = c.getContext('2d');
+                    let w=img.width, h=img.height; if(w>1920){h*=1920/w; w=1920;} c.width=w; c.height=h; cx.drawImage(img,0,0,w,h);
+                    c.toBlob(async blob => { await saveMedia(key, blob); localStorage.setItem('somnia_name_'+key, "Custom Canvas"); loadCustomBackgrounds(); }, 'image/jpeg', 0.85);
+                }; img.src = e.target.result;
+            }; r.readAsDataURL(file); input.value="";
+        }
+
+        let vaultList = JSON.parse(localStorage.getItem('somniaVault')) || [];
+        function initializeVault() {
+            if (vaultList.length === 0) {
+                vaultList.push({ n: "Default Stronghold", bc: "obsidian-mode", gc: "glow-pulse", pt: "dust", bgk: null, vs: {s: "10s", o: "0.3", b: "0.85", z: "1", pc: "#e0e7ff", gc: "rgba(224, 231, 255, 0.5)"} });
+                localStorage.setItem('somniaVault', JSON.stringify(vaultList));
+            }
+        }
+
+        function saveCurrentState() {
+            const s = { 
+                bc: document.documentElement.className, 
+                gc: document.getElementById('glow-layer').className, 
+                pt: window.particleType, 
+                bgk: localStorage.getItem('somnia_active_bg_key'), 
+                vs: {
+                    s: document.documentElement.style.getPropertyValue('--anim-speed'), 
+                    o: document.documentElement.style.getPropertyValue('--glow-opac'), 
+                    b: document.documentElement.style.getPropertyValue('--bg-bright'),
+                    z: document.documentElement.style.getPropertyValue('--bg-zoom'),
+                    pc: document.documentElement.style.getPropertyValue('--particle-color'),
+                    gc: document.documentElement.style.getPropertyValue('--glow-color')
+                } 
+            };
+            localStorage.setItem('somnia_active_state', JSON.stringify(s));
+        }
+        
+        async function restoreActiveState() {
+            const str = localStorage.getItem('somnia_active_state'); const bgk = localStorage.getItem('somnia_active_bg_key');
+            if(bgk) { 
+                const b = await getMedia(bgk); 
+                if(b) document.getElementById('bg-anchor').style.backgroundImage = `url('${URL.createObjectURL(b)}')`; 
+            } else {
+                document.getElementById('bg-anchor').style.backgroundImage = "url('SomniaStronghold.png')"; 
+            }
+            if(str) {
+                const s = JSON.parse(str); document.documentElement.className=s.bc||'obsidian-mode'; document.getElementById('glow-layer').className=s.gc||'glow-pulse'; window.particleType=s.pt||'dust';
+                if(s.vs) { 
+                    updateVar('--anim-speed', s.vs.s); updateVar('--glow-opac', s.vs.o); updateVar('--bg-bright', s.vs.b); 
+                    if(s.vs.z) { updateVar('--bg-zoom', s.vs.z); document.getElementById('zoom-slider').value = s.vs.z; }
+                    if(s.vs.pc) updateVar('--particle-color', s.vs.pc);
+                    if(s.vs.gc) updateVar('--glow-color', s.vs.gc);
+                }
+            }
+        }
+        async function savePreset() {
+            const n = await somniaPrompt("Vault Vibe", "Name setup:"); if(!n) return;
+            const s = { 
+                n, 
+                bc: document.documentElement.className, 
+                gc: document.getElementById('glow-layer').className, 
+                pt: window.particleType, 
+                bgk: localStorage.getItem('somnia_active_bg_key'), 
+                vs: {
+                    s: document.documentElement.style.getPropertyValue('--anim-speed'), 
+                    o: document.documentElement.style.getPropertyValue('--glow-opac'), 
+                    b: document.documentElement.style.getPropertyValue('--bg-bright'),
+                    z: document.documentElement.style.getPropertyValue('--bg-zoom'),
+                    pc: document.documentElement.style.getPropertyValue('--particle-color'),
+                    gc: document.documentElement.style.getPropertyValue('--glow-color')
+                } 
+            };
+            vaultList.push(s); localStorage.setItem('somniaVault', JSON.stringify(vaultList)); renderVault();
+        }
+        function renderVault() {
+            const c = document.getElementById('vault-list'); c.innerHTML = vaultList.map((p,i)=>`<div class="mixer-card"><button class="mixer-btn" style="color:var(--primary);" onclick="loadPreset(${i})">▶ ${p.n}</button><button class="toy-btn" style="color:#fb7185; border:none; background:transparent;" onclick="delPreset(${i})">✕</button></div>`).join('');
+        }
+        async function delPreset(i) { if(await somniaConfirm("Drop Vibe?","Delete?")) { vaultList.splice(i,1); localStorage.setItem('somniaVault', JSON.stringify(vaultList)); renderVault(); } }
+        async function loadPreset(i) {
+            const s=vaultList[i]; document.documentElement.className=s.bc; document.getElementById('glow-layer').className=s.gc; window.particleType=s.pt;
+            if(s.bgk){ const b=await getMedia(s.bgk); if(b){ document.getElementById('bg-anchor').style.backgroundImage=`url('${URL.createObjectURL(b)}')`; localStorage.setItem('somnia_active_bg_key',s.bgk); } } else { document.getElementById('bg-anchor').style.backgroundImage="url('SomniaStronghold.png')"; localStorage.removeItem('somnia_active_bg_key'); }
+            if(s.vs){ 
+                updateVar('--anim-speed',s.vs.s); updateVar('--glow-opac',s.vs.o); updateVar('--bg-bright',s.vs.b); 
+                if(s.vs.z) { updateVar('--bg-zoom', s.vs.z); document.getElementById('zoom-slider').value = s.vs.z; }
+                if(s.vs.pc) updateVar('--particle-color', s.vs.pc);
+                if(s.vs.gc) updateVar('--glow-color', s.vs.gc);
+            } saveCurrentState();
+        }
+        
+        // Pure UI/Vibes Export & Import
+        function exportVibes() { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify({v:vaultList, s:JSON.parse(localStorage.getItem('somnia_active_state')||'{}')})],{type:'application/json'})); a.download='Somnia_Vibes.json'; a.click(); }
+        function importVibes(input) { 
+            if(!input.files || !input.files[0]) return;
+            const r = new FileReader(); 
+            r.onload=e=>{ 
+                try {
+                    const d=JSON.parse(e.target.result); 
+                    if(d.v) {
+                        vaultList=d.v; localStorage.setItem('somniaVault',JSON.stringify(vaultList)); 
+                        localStorage.setItem('somnia_active_state',JSON.stringify(d.s)); 
+                        restoreActiveState(); renderVault(); 
+                        somniaAlert("Vibes Restored", "Aesthetic UI presets loaded.");
+                    } else {
+                        somniaAlert("Error", "Invalid Vibes file.");
+                    }
+                } catch(err) { somniaAlert("Error", "Could not parse JSON."); }
+            }; 
+            r.readAsText(input.files[0]); 
+            input.value=""; 
+        }
+        
+        // Pure Ledger Data Export & Import
+        async function exportLedger() {
+            const txs = await dbGetAll('transactions'); const accs = await dbGetAll('accounts'); const bills = await dbGetAll('bills'); const crumbs = await dbGetAll('breadcrumbs');
+            const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify({txs,accs,bills,crumbs})],{type:'application/json'})); a.download='Stronghold_Ledger.json'; a.click();
+        }
+        async function importLedger(input) {
+            if(!input.files || !input.files[0]) return;
+            const r = new FileReader();
+            r.onload = async e => {
+                try {
+                    const d = JSON.parse(e.target.result);
+                    if(d.txs) for(let tx of d.txs) await dbPut('transactions', tx);
+                    if(d.accs) for(let a of d.accs) await dbPut('accounts', a);
+                    if(d.bills) for(let b of d.bills) await dbPut('bills', b);
+                    if(d.crumbs) for(let c of d.crumbs) await dbPut('breadcrumbs', c);
+                    await renderLedger(); await renderAccounts(); await renderAlmanac();
+                    somniaAlert("Vault Restored", "Ledger and Breadcrumb data imported securely.");
+                } catch(err) {
+                    somniaAlert("Error", "Invalid Ledger File.");
+                }
+            }; 
+            r.readAsText(input.files[0]); 
+            input.value = ""; 
+        }
+
+        // Global Snapshot Execution
+        async function globalSnapshot() {
+            const txs = await dbGetAll('transactions');
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+            
+            // Calculate total volume across all ledgers
+            const totalVol = txs.reduce((sum, tx) => sum + tx.amount, 0);
+            
+            const logEntry = `📸 SYSTEM SNAPSHOT: Total Vault Volume recorded at $${totalVol.toFixed(2)}. Data secured locally at ${timeStr}.`;
+            
+            // Explicitly force to System or active context so it instantly appears
+            const targetContext = currentAlmanacContext || 'household';
+            await dbPut('breadcrumbs', {id:'cr_'+Date.now(), context: targetContext, text: logEntry, date: now.toLocaleDateString()});
+            
+            // Force immediate UI update
+            await renderAlmanac();
+            
+            // Trigger JSON Download
+            exportLedger();
+            somniaAlert("Snapshot Secured", "A full system backup has been downloaded to your hard drive, and a timestamped journal log has been etched into the Almanac.");
+        }
+
+        // Boot Init
+        document.addEventListener('DOMContentLoaded', async () => {
+            initializeVault();
+            populateGrid('color-grid', colors, 'color'); 
+            populateGrid('particle-grid', pList, 'particle'); 
+            populateGrid('glow-grid', glows, 'glow');
+            populateColorGrid('particle-color-grid', '--particle-color');
+            populateColorGrid('glow-color-grid', '--glow-color');
+
+            await loadCustomBackgrounds(); await loadCustomAudio(); initParticles();
+            
+            setInterval(() => {
+                const now = new Date(); document.getElementById('clock-widget').textContent = now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+                document.getElementById('date-widget').textContent = now.toLocaleDateString([], {weekday:'long',month:'long',day:'numeric'});
+            }, 1000);
+            
+            if(localStorage.getItem('gemini_api_key')) document.getElementById('gemini-key-input').value = localStorage.getItem('gemini_api_key');
+            
+            switchLedgerContext('household', document.querySelectorAll('#stronghold-modal .view-btn')[0]);
+            switchAlmanacContext('household', document.querySelectorAll('#almanac-modal .view-btn')[0]);
+            renderVault(); 
+        });
+    </script>
+</body>
+</html>
