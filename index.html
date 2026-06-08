@@ -69,7 +69,7 @@
         .boot-disclaimer { color: var(--text-main); font-size: 1.05rem; line-height: 1.8; letter-spacing: 1px; margin-bottom: 35px; font-family: 'Georgia', serif; font-style: italic; opacity: 0.9; }
 
         /* --- VISUAL CANVAS & GLOWS --- */
-        #bg-anchor { position: fixed; inset: 0; background-color: #050508; background-image: url('SomniaStronghold.png'); background-size: cover; background-position: center center; background-repeat: no-repeat; z-index: 1; transform: scale(var(--bg-zoom)) translateZ(0); filter: brightness(var(--bg-bright)); transition: background 1.5s ease, filter 0.5s ease, transform 0.5s ease; }
+        #bg-anchor { position: fixed; inset: 0; background-color: #050508; background-image: url('tomb.png'); background-size: cover; background-position: center center; background-repeat: no-repeat; z-index: 1; transform: scale(var(--bg-zoom)) translateZ(0); filter: brightness(var(--bg-bright)); transition: background 1.5s ease, filter 0.5s ease, transform 0.5s ease; }
         #glow-layer { position: fixed; inset: 0; background: radial-gradient(circle at 50% 50%, var(--glow-color) 0%, transparent 70%); z-index: 2; opacity: var(--glow-opac); pointer-events: none; transition: opacity 0.5s ease, background 1.5s ease; transform: translateZ(0); }
         
         .glow-pulse { animation: g-pulse var(--anim-speed) infinite alternate ease-in-out; }
@@ -217,6 +217,27 @@
         .cal-cell { min-height: 85px; border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 8px; position: relative; font-family: monospace; font-size: 0.9rem; overflow-y: auto; display: flex; flex-direction: column; box-shadow: inset 0 0 15px rgba(0,0,0,0.5); transition: 0.2s;}
         .cal-cell:hover { transform: translateY(-2px); box-shadow: inset 0 0 25px rgba(0,0,0,0.7); cursor: pointer; }
         .cal-cell.selected-day { border-color: var(--primary) !important; box-shadow: inset 0 0 20px var(--primary-glow) !important; }
+
+        /* ZOMBIE CHAT WIDGET STYLES */
+        @keyframes zombie-sluggish {
+            0% { transform: translateY(0px) rotate(-1deg); filter: drop-shadow(0 0 10px rgba(52, 211, 153, 0.4)); }
+            50% { transform: translateY(-6px) rotate(2deg); filter: drop-shadow(0 0 25px rgba(132, 204, 22, 0.8)); }
+            100% { transform: translateY(0px) rotate(-1deg); filter: drop-shadow(0 0 10px rgba(52, 211, 153, 0.4)); }
+        }
+        .zombie-idle {
+            animation: zombie-sluggish 8s ease-in-out infinite;
+            transform-origin: bottom center;
+            cursor: pointer;
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), filter 0.4s;
+        }
+        .zombie-idle:hover {
+            filter: brightness(1.2) drop-shadow(0 0 30px rgba(52, 211, 153, 0.9)) !important;
+        }
+        .zombie-talking {
+            animation: none !important;
+            transform: scale(1.15) translateY(-5px) !important;
+            filter: brightness(1.1) drop-shadow(0 0 35px rgba(52, 211, 153, 1)) !important;
+        }
 
         /* RESPONSIVE LAYOUT LOGIC */
         @media (max-width: 1050px) {
@@ -444,6 +465,27 @@
         </div>
     </div>
 
+    <!-- Zombie Floating Chat Interface -->
+    <div id="zombie-chat-wrapper" style="position: fixed; bottom: 20px; right: 35px; z-index: 999; display: flex; align-items: flex-end; gap: 20px; pointer-events: none;" onclick="event.stopPropagation()">
+        <!-- Clean glassmorphic bubble -->
+        <div id="zombie-bubble" style="display: none; width: 320px; text-align: left; padding: 22px; border: 1px solid var(--glass-border); border-radius: 24px 24px 0 24px; background: rgba(10, 15, 25, 0.75); backdrop-filter: blur(25px); box-shadow: 0 15px 35px rgba(0,0,0,0.6); pointer-events: auto; margin-bottom: 20px; position: relative;">
+            <div style="font-weight: bold; color: var(--primary); margin-bottom: 8px; font-family: monospace; font-size: 0.75rem; display: flex; justify-content: space-between; align-items: center; letter-spacing: 1px;">
+                <span>CRYPT KEEPER</span>
+                <button onclick="closeZombieChat(event)" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size: 0.85rem; padding: 0;">✕</button>
+            </div>
+            <div id="zombie-text" style="font-size: 0.8rem; line-height: 1.5; color: var(--text-main); font-family: 'Georgia', serif; max-height: 150px; overflow-y: auto; margin-bottom: 12px; font-style: italic;">
+                *Moans sluggishly, dragging a heavy leg...* <br>Grrr... brains... or balance ledgers? Whisper to me... what transaction must we bury in the tomb?
+            </div>
+            <div style="display: flex; gap: 8px;">
+                <input type="text" id="zombie-input" class="core-input" style="margin: 0; padding: 8px 12px; font-size: 0.75rem; border-radius: 12px; flex: 1; text-align: left;" placeholder="Type here...">
+                <button class="toy-btn" style="padding: 8px 15px; border-radius: 12px; font-size: 0.65rem;" onclick="sendZombieMessage()">Ask</button>
+            </div>
+        </div>
+        <div style="pointer-events: auto;">
+            <img id="zombie-avatar" class="zombie-idle" src="zombie1.png" alt="Somatic Zombie" style="width: 140px; height: auto; display: block;" onclick="toggleZombieChat()">
+        </div>
+    </div>
+
     <div id="bg-anchor"></div>
     <div id="glow-layer" class="glow-pulse"></div>
     <canvas id="particleCanvas"></canvas>
@@ -623,7 +665,6 @@
         let abaExp = "";
         function aba(val) {
             const disp = document.getElementById('aba-disp');
-            // Animate button push
             const btn = document.getElementById('btn-aba-'+val);
             if(btn) { btn.classList.add('key-active'); setTimeout(()=>btn.classList.remove('key-active'), 150); }
 
@@ -631,7 +672,6 @@
             if(val === '=') { 
                 try { 
                     abaExp = String(new Function('return ' + abaExp)()); 
-                    // Format output safely
                     disp.innerText = Number.isInteger(Number(abaExp)) ? abaExp : Number(abaExp).toFixed(2); 
                 } catch(e) { disp.innerText = "ERR"; abaExp = ""; } 
                 return; 
@@ -852,7 +892,6 @@
         async function renderAlmanac() {
             const searchQ = document.getElementById('search-almanac').value.toLowerCase();
 
-            // Render Cumulative Calendar Grid
             const grid = document.getElementById('almanac-grid'); grid.innerHTML = '';
             const now = new Date(); const y = now.getFullYear(); const m = now.getMonth();
             const firstDay = new Date(y, m, 1).getDay(); const daysInMonth = new Date(y, m + 1, 0).getDate();
@@ -894,7 +933,6 @@
                 if(el) el.classList.add('selected-day');
             }
 
-            // Render Filtered Crumbs
             const cList = document.getElementById('crumbs-list'); cList.innerHTML=''; 
             const allCrumbs = await dbGetAll('breadcrumbs'); 
             let ctxCrumbs = allCrumbs.filter(c => c.context === currentAlmanacContext || c.context === 'System');
@@ -971,6 +1009,66 @@
             } catch(e) { console.log(e); s.style.color='#fb7185'; s.innerText="API/Parse Error."; }
         }
 
+        // === ZOMBIE CHAT INTERFACE LOGIC ===
+        function toggleZombieChat() {
+            const avatar = document.getElementById('zombie-avatar');
+            const bubble = document.getElementById('zombie-bubble');
+            
+            if (bubble.style.display === 'none' || !bubble.style.display) {
+                bubble.style.display = 'block';
+                avatar.classList.add('zombie-talking');
+                document.getElementById('zombie-input').focus();
+            } else {
+                closeZombieChat();
+            }
+        }
+
+        function closeZombieChat(event) {
+            if (event) event.stopPropagation();
+            const avatar = document.getElementById('zombie-avatar');
+            const bubble = document.getElementById('zombie-bubble');
+            bubble.style.display = 'none';
+            avatar.classList.remove('zombie-talking');
+        }
+
+        async function sendZombieMessage() {
+            const inputEl = document.getElementById('zombie-input');
+            const textEl = document.getElementById('zombie-text');
+            const query = inputEl.value.trim();
+            if(!query) return;
+
+            textEl.innerHTML = `<em>*Moaning sluggishly, rotting fingers tracing ledgers...*</em>`;
+            inputEl.value = '';
+
+            const apiKey = localStorage.getItem('gemini_api_key');
+            if(!apiKey) {
+                setTimeout(() => {
+                    textEl.innerHTML = `*The zombie drops a decayed ledger* <br>"Uhnnn... API Key missing from The Keeper tab... Grrr... feed me key... so I can think..."`;
+                }, 800);
+                return;
+            }
+
+            const systemPrompt = `You are a helpful, sluggish, groaning financial Crypt Zombie assistant inside a private digital ledger named SomniaStronghold. Keep your responses short (2-3 sentences), speaking in a slightly slow, groaning manner (e.g. including grunts, groans like 'Urrghh', 'Grrr', or 'Brains...'), and centered around counting gold, locking the vaults, or guarding local finances. Answer this query: "${query}"`;
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: systemPrompt }] }] })
+                });
+                const data = await response.json();
+                if (data.error) {
+                    textEl.innerText = `*Groans* Error: ${data.error.message}`;
+                    return;
+                }
+                let replyText = data.candidates[0].content.parts[0].text.trim();
+                textEl.innerText = replyText;
+            } catch(e) {
+                textEl.innerText = `*Falls over* My decay is catching up... check the console.`;
+                console.error(e);
+            }
+        }
+
         // --- 7. VIBE ENGINE (Audio, Particles, Canvas, Vault, Snapshots) ---
         
         // Color Palette Data for Sprinkles & Glows
@@ -987,8 +1085,8 @@
             });
         }
 
-        // Audio Engine
-        let actAud = {}; let aCtx; let mGain; let cLib = [];
+        // CORS-Immune Direct HTML5 Audio Engine
+        let actAud = {}; let masterGainValue = 1; let cLib = [];
         const soundLibrary = [
             { id: "rain", name: "🌧️ Gentle Rain", url: "rain.mp3" }, { id: "thunder", name: "🌩️ Thunderstorm", url: "thunder.mp3" },
             { id: "winterwind", name: "🌬️ Winter Wind", url: "winterwind.mp3" }, { id: "owls", name: "🦉 Midnight Owls", url: "owls.mp3" },
@@ -999,27 +1097,80 @@
             { id: "windchimes", name: "🎐 Wind Chimes", url: "windchimes.mp3" }, { id: "musicbox1", name: "🎶 Music Box I", url: "musicbox1.mp3" }
         ];
 
-        function initAudio() { if(!aCtx) { aCtx = new (window.AudioContext||window.webkitAudioContext)(); mGain = aCtx.createGain(); mGain.gain.value = document.getElementById('master-gain-slider').value; mGain.connect(aCtx.destination); } if(aCtx.state==='suspended') aCtx.resume(); }
-        function setMasterGain(v) { if(mGain) mGain.gain.value=v; }
+        function initAudio() {
+            // Native direct HTML5 audio execution bypasses cross-origin blocks locally
+        }
+
+        function setMasterGain(val) { 
+            masterGainValue = parseFloat(val);
+            Object.keys(actAud).forEach(id => {
+                updateTrackVolume(id);
+            });
+        }
+
+        function updateTrackVolume(id) {
+            if (actAud[id]) {
+                const targetVol = actAud[id].targetVol;
+                actAud[id].a.volume = Math.min(1.0, targetVol * masterGainValue);
+            }
+        }
+
         async function loadCustomAudio() {
             cLib=[]; const keys=await getAllMediaKeys(); const aKeys=keys.filter(k=>k.startsWith('aud_'));
             for(let key of aKeys) { const b=await getMedia(key); if(b) cLib.push({id:key, name:localStorage.getItem('somnia_name_'+key)||"Sound", url:URL.createObjectURL(b)}); }
             const allSounds = [...cLib, ...soundLibrary];
-            const mc = document.getElementById('mixer-container'); mc.innerHTML = allSounds.map(t=>`<div class="mixer-card" id="card-${t.id}"><button class="mixer-btn" onclick="toggleStem('${t.id}','${t.url}')">${t.name}</button><button class="toy-btn" style="color:#fb7185; border:none; background:transparent; display:${cLib.includes(t)?'block':'none'};" onclick="delAud('${t.id}')">✕</button><input type="range" id="vol-${t.id}" class="mixer-slider" min="0" max="1" step="0.05" value="0.5" oninput="adjVol('${t.id}',this.value)"></div>`).join('');
+            const mc = document.getElementById('mixer-container'); 
+            mc.innerHTML = allSounds.map(t=>`<div class="mixer-card" id="card-${t.id}"><button class="mixer-btn" onclick="toggleStem('${t.id}','${t.url}')">${t.name}</button><button class="toy-btn" style="color:#fb7185; border:none; background:transparent; display:${t.isCustom||t.id.startsWith('aud_')?'block':'none'};" onclick="delAud('${t.id}')">✕</button><input type="range" id="vol-${t.id}" class="mixer-slider" min="0" max="1" step="0.05" value="0.5" oninput="adjVol('${t.id}',this.value)"></div>`).join('');
             Object.keys(actAud).forEach(id => { const c = document.getElementById(`card-${id}`); if(c) c.classList.add('playing'); });
         }
+
         function handleAudioUpload(input) {
             if(!input.files||!input.files[0]) return; const file=input.files[0]; const key='aud_'+Date.now();
             saveMedia(key,file).then(()=>{ localStorage.setItem('somnia_name_'+key, "Custom Audio"); loadCustomAudio(); }); input.value="";
         }
+
         async function delAud(id) { if(await somniaConfirm("Drop Sound?","Delete?")) { if(actAud[id]) { actAud[id].a.pause(); delete actAud[id]; } await deleteMedia(id); loadCustomAudio(); } }
+
         function toggleStem(id, url) {
-            initAudio(); const c=document.getElementById(`card-${id}`);
-            if(actAud[id]) { actAud[id].a.pause(); delete actAud[id]; c.classList.remove('playing'); }
-            else { const a=new Audio(url); a.loop=true; const src=aCtx.createMediaElementSource(a); const g=aCtx.createGain(); g.gain.value=document.getElementById(`vol-${id}`).value; src.connect(g); g.connect(mGain); a.play(); actAud[id]={a,g}; c.classList.add('playing'); }
+            const c=document.getElementById(`card-${id}`);
+            if(actAud[id]) { 
+                actAud[id].a.pause(); 
+                delete actAud[id]; 
+                c.classList.remove('playing'); 
+            } else { 
+                const a=new Audio(url); 
+                a.loop=true; 
+                
+                const slider = document.getElementById(`vol-${id}`);
+                const targetVol = slider ? parseFloat(slider.value) : 0.5;
+                
+                actAud[id] = { a: a, targetVol: targetVol };
+                updateTrackVolume(id);
+                
+                a.play().then(() => {
+                    c.classList.add('playing');
+                }).catch(e => {
+                    console.warn("Audio play blocked or file missing:", e);
+                    delete actAud[id];
+                });
+            }
         }
-        function adjVol(id,v) { if(actAud[id]) actAud[id].g.gain.value=v; }
-        function stopAllAudio() { Object.keys(actAud).forEach(id=>{ actAud[id].a.pause(); document.getElementById(`card-${id}`).classList.remove('playing'); delete actAud[id]; }); }
+
+        function adjVol(id,v) { 
+            if(actAud[id]) {
+                actAud[id].targetVol = parseFloat(v);
+                updateTrackVolume(id);
+            }
+        }
+
+        function stopAllAudio() { 
+            Object.keys(actAud).forEach(id=>{ 
+                actAud[id].a.pause(); 
+                const card = document.getElementById(`card-${id}`);
+                if(card) card.classList.remove('playing');
+                delete actAud[id]; 
+            }); 
+        }
 
         // Visuals (Particles/Canvas/Vault)
         const colors = ['lunar','noir','vellum','amethyst','crimson','emerald','solar','void','obsidian','ghost','gothic','library','y2k','vintage','cyber','twilight','autumn','abyss','sepia','frost'];
@@ -1120,7 +1271,7 @@
                 const b = await getMedia(bgk); 
                 if(b) document.getElementById('bg-anchor').style.backgroundImage = `url('${URL.createObjectURL(b)}')`; 
             } else {
-                document.getElementById('bg-anchor').style.backgroundImage = "url('SomniaStronghold.png')"; 
+                document.getElementById('bg-anchor').style.backgroundImage = "url('tomb.png')"; 
             }
             if(str) {
                 const s = JSON.parse(str); document.documentElement.className=s.bc||'obsidian-mode'; document.getElementById('glow-layer').className=s.gc||'glow-pulse'; window.particleType=s.pt||'dust';
@@ -1157,7 +1308,7 @@
         async function delPreset(i) { if(await somniaConfirm("Drop Vibe?","Delete?")) { vaultList.splice(i,1); localStorage.setItem('somniaVault', JSON.stringify(vaultList)); renderVault(); } }
         async function loadPreset(i) {
             const s=vaultList[i]; document.documentElement.className=s.bc; document.getElementById('glow-layer').className=s.gc; window.particleType=s.pt;
-            if(s.bgk){ const b=await getMedia(s.bgk); if(b){ document.getElementById('bg-anchor').style.backgroundImage=`url('${URL.createObjectURL(b)}')`; localStorage.setItem('somnia_active_bg_key',s.bgk); } } else { document.getElementById('bg-anchor').style.backgroundImage="url('SomniaStronghold.png')"; localStorage.removeItem('somnia_active_bg_key'); }
+            if(s.bgk){ const b=await getMedia(s.bgk); if(b){ document.getElementById('bg-anchor').style.backgroundImage=`url('${URL.createObjectURL(b)}')`; localStorage.setItem('somnia_active_bg_key',s.bgk); } } else { document.getElementById('bg-anchor').style.backgroundImage="url('tomb.png')"; localStorage.removeItem('somnia_active_bg_key'); }
             if(s.vs){ 
                 updateVar('--anim-speed',s.vs.s); updateVar('--glow-opac',s.vs.o); updateVar('--bg-bright',s.vs.b); 
                 if(s.vs.z) { updateVar('--bg-zoom', s.vs.z); document.getElementById('zoom-slider').value = s.vs.z; }
@@ -1219,19 +1370,12 @@
             const now = new Date();
             const timeStr = now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'});
             
-            // Calculate total volume across all ledgers
             const totalVol = txs.reduce((sum, tx) => sum + tx.amount, 0);
-            
             const logEntry = `📸 SYSTEM SNAPSHOT: Total Vault Volume recorded at $${totalVol.toFixed(2)}. Data secured locally at ${timeStr}.`;
-            
-            // Explicitly force to System or active context so it instantly appears
             const targetContext = currentAlmanacContext || 'household';
             await dbPut('breadcrumbs', {id:'cr_'+Date.now(), context: targetContext, text: logEntry, date: now.toLocaleDateString()});
             
-            // Force immediate UI update
             await renderAlmanac();
-            
-            // Trigger JSON Download
             exportLedger();
             somniaAlert("Snapshot Secured", "A full system backup has been downloaded to your hard drive, and a timestamped journal log has been etched into the Almanac.");
         }
@@ -1254,6 +1398,14 @@
             
             if(localStorage.getItem('gemini_api_key')) document.getElementById('gemini-key-input').value = localStorage.getItem('gemini_api_key');
             
+            // Zombie Chat Enter Key Bind
+            const zombieInput = document.getElementById('zombie-input');
+            if(zombieInput) {
+                zombieInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') sendZombieMessage();
+                });
+            }
+
             switchLedgerContext('household', document.querySelectorAll('#stronghold-modal .view-btn')[0]);
             switchAlmanacContext('household', document.querySelectorAll('#almanac-modal .view-btn')[0]);
             renderVault(); 
